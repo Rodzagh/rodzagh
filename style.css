@@ -11,7 +11,10 @@ a {
     color:#fff;
     text-decoration: none;
 }
-
+.all-sizes {
+    width: 100%; /* Ensures the section takes full width */
+    overflow: hidden; /* Prevents potential horizontal scrollbar */
+}
 .navbar {
     position:fixed;
     left:0;
