@@ -75,5 +75,24 @@
     </div>
 </section>
 </body>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.querySelector('.navbar');
+            let lastScrollTop = 0;
 
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop) {
+                    // Scrolling down
+                    navbar.classList.remove('show-nav');
+                } else {
+                    // Scrolling up
+                    navbar.classList.add('show-nav');
+                }
+
+                lastScrollTop = scrollTop;
+            });
+        });
+    </script>
 </html>
