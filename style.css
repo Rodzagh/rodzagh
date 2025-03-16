@@ -41,7 +41,7 @@ body {
     top:0;
     width:150%;
     padding: 25px 9%;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items:center;
     z-index:100;
