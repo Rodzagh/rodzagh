@@ -253,21 +253,22 @@ a {
 
 @media (max-width: 768px) {
     .navbar .logo, .navbar ul li a {
-        font-size: 18px; /* Reduce navigation font size */
+        font-size: 10px; /* Reduce navigation font size */
     }
 
     .home-info h1 {
-        font-size: 30px; /* Reduce main header font size */
+        font-size: 20px; /* Reduce main header font size */
     }
 
     .home-info h2 {
-        font-size: 24px; /* Reduce sub header font size */
+        font-size: 14px; /* Reduce sub header font size */
     }
 
     .home-info p {
         font-size: 14px; /* Reduce paragraph font size */
     }
 }
+
 @media (max-width: 768px) {
   .navbar ul {
     flex-direction: column; /* Stack navigation items vertically */
@@ -303,4 +304,11 @@ a {
     100%{
         transform:translateY(0%);
     }
+}
+.navbar.show-nav {
+    transform: translateY(0); /* Show navbar */
+}
+
+.navbar:not(.show-nav) {
+    transform: translateY(-100%); /* Hide navbar */
 }
