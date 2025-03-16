@@ -62,14 +62,14 @@ a {
         right: 20px;
         background-color: #1f242d;
         text-align: right;
-        width: 50px;
+        width: 100px;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         padding: 10px;
     }
 
     .nav-links .active {
-        display: flex; /* Display when active */
+        display: flex; 
     }
     .nav-links li {
         margin: 10px 0;
