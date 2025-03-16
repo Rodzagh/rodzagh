@@ -161,7 +161,7 @@ a {
         display: none;
         flex-direction: column;
         /* Limit the width of the navigation links */
-        width: 60px; /* Adjust this value as needed */
+        width: 60%; /* Adjust this value as needed */
         background-color: rgba(0, 0, 0, 0.8); /* Add a background for better visibility */
         border-radius: 5px; /* Add rounded corners */
         overflow: hidden; /* Prevent content overflow */
@@ -255,7 +255,7 @@ a {
     background: conic-gradient(transparent,transparent,
     transparent, #07ba10);
     transform:rotate(0deg);
-    animation:rotate-border 10s linear infinite;
+    animation:rotate-border 5s linear infinite;
 }
 
 @keyframes rotate-border {
