@@ -14,7 +14,7 @@ a {
 .all-sizes {
     width: 100%; 
     display: flex;
-    
+    position: relative;
     overflow: hidden;
 }
 .navbar {
@@ -22,7 +22,7 @@ a {
     left:0;
     top:0;
     width:100%;
-    padding:25px 9px;
+    padding: 25px 9%;
     display: flex;
     justify-content: space-between;
     align-items:center;
@@ -111,7 +111,7 @@ a {
 
 .home {
     display: flex;
-    align-item: center;
+    align-items: center;
     gap:90px;
     height:100vh;
     padding: 150px 9% 0;
