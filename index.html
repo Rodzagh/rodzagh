@@ -77,10 +77,12 @@
 </section>
 </body>
 <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navbar = document.querySelector('.navbar');
-            let lastScrollTop = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+        const navbar = document.querySelector('.navbar');
+        let lastScrollTop = 0;
 
+        // Check if it's a mobile device (screen width <= 768px)
+        if (window.innerWidth <= 768) {
             window.addEventListener('scroll', () => {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -94,6 +96,7 @@
 
                 lastScrollTop = scrollTop;
             });
-        });
-    </script>
+        }
+    });
+</script>
 </html>
