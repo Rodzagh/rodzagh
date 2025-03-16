@@ -16,7 +16,7 @@ a {
     position:fixed;
     left:0;
     top:0;
-    width:50%;
+    width:100%;
     padding:25px 9px;
     display: flex;
     justify-content: space-between;
