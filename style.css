@@ -161,7 +161,7 @@ a {
         display: none;
         flex-direction: column;
         /* Limit the width of the navigation links */
-        width: 200px; /* Adjust this value as needed */
+        width: 20px; /* Adjust this value as needed */
         background-color: rgba(0, 0, 0, 0.8); /* Add a background for better visibility */
         border-radius: 5px; /* Add rounded corners */
         overflow: hidden; /* Prevent content overflow */
@@ -172,8 +172,8 @@ a {
         margin: 0;
         padding: 10px;
         border-bottom: 1px solid #333;
-        width: 100%;
-        text-align: center;
+        width: 50%;
+        text-align: right;
     }
 
     .nav-links.active {
