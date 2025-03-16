@@ -191,7 +191,7 @@ body {
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
     .home {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-template-columns: 1fr 1fr; /* Single column on mobile */
         grid-template-rows: auto auto; /* stack info and image */
     }
 }
