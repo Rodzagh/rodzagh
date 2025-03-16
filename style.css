@@ -144,7 +144,7 @@ a {
     margin-left: 35px;
 }
 
-/* Mobile Styles */
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -152,15 +152,20 @@ a {
     }
 
     .menu-toggle {
-        display: flex; /* Show hamburger icon */
-        align-self: flex-end; /* Align to the right */
+        display: flex;
+        align-self: flex-end;
         margin-bottom: 10px;
     }
 
     .nav-links {
-        display: none; /* Initially hide the menu */
+        display: none;
         flex-direction: column;
-        width: 100%;
+        /* Limit the width of the navigation links */
+        width: 200px; /* Adjust this value as needed */
+        background-color: rgba(0, 0, 0, 0.8); /* Add a background for better visibility */
+        border-radius: 5px; /* Add rounded corners */
+        overflow: hidden; /* Prevent content overflow */
+        margin-top: 10px; /* Add margin to separate from the hamburger */
     }
 
     .nav-links li {
@@ -172,7 +177,7 @@ a {
     }
 
     .nav-links.active {
-        display: flex; /* Show the menu when active */
+        display: flex;
     }
 }
 
