@@ -11,34 +11,20 @@ a {
     color:#fff;
     text-decoration: none;
 }
-h2 {
-    font-size: 2em; /* Adjust as needed for desktop */
-    line-height: 1.2;
-    white-space: nowrap; /*prevent wrapping on desktop*/
+h2 span {
+    display: none; /* Initially hide all spans */
+    /* ... your other span styles ... */
 }
 
-h2 span {
-    display: inline-block; /* allows to change the width*/
-    padding-right: 5px; /* add some space between spans */
+h2 span.show {
+    display: inline-block; /* Show the span when the 'show' class is added */
 }
 
 @media (max-width: 768px) {
-    h2 {
-        font-size: 1.5em; /* Smaller font size for mobile */
-        line-height: 1.4;
-        white-space: normal; /* allow wrapping on mobile */
+    h2 span.show {
+        display: block; /*show spans as block on mobile*/
     }
 
-    h2 span {
-        display: block; /* Stack spans vertically on mobile */
-        width: 100%; /* Spans take full width */
-        text-align: left; /*align left*/
-    }
-    /*optional remove animation on small screens*/
-    h2 span[data-text]::before {
-        animation: none;
-    }
-}
 .navbar {
     position:fixed;
     left:0;
