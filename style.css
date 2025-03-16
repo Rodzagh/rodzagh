@@ -11,6 +11,48 @@ a {
     color:#fff;
     text-decoration: none;
 }
+.navbar {
+    background-color: #1f242d; /* Or your desired background color */
+    color: #fff; /* Or your desired text color */
+    padding: 15px 20px; /* Adjust padding as needed */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space logo and links */
+    align-items: center; /* Vertically align items */
+    position: fixed; /* Keep it at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100; /* Ensure it's above other elements */
+}
+
+.navbar .logo {
+    font-size: 1.5em; /* Adjust logo size */
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar .links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .links li {
+    margin-left: 20px; /* Adjust spacing between links */
+}
+
+.navbar .links li a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.navbar .links li a:hover,
+.navbar .links li.active a {
+    color: #7cf03d; /* Or your desired hover color */
+}
 .nav {margin: 0;
 	padding: 0;
 	border: 0;
