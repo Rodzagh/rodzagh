@@ -11,12 +11,6 @@ a {
     color:#fff;
     text-decoration: none;
 }
-.all-sizes {
-    width: 100%; 
-    display: flex;
-    position: relative;
-    overflow: hidden;
-}
 .navbar {
     position:fixed;
     left:0;
