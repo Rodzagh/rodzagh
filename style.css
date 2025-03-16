@@ -289,6 +289,8 @@ a {
   .home-info h1 {
     font-size: 40px; /* Adjust font size */
   }
+/* Apply hiding behavior only on mobile */
+
 
   .home-img .img-box {
     width: 80vw;
@@ -305,10 +307,12 @@ a {
         transform:translateY(0%);
     }
 }
-.navbar.show-nav {
-    transform: translateY(0); /* Show navbar */
-}
+@media (max-width: 768px) {
+    .navbar.show-nav {
+        transform: translateY(0); /* Show navbar */
+    }
 
-.navbar:not(.show-nav) {
-    transform: translateY(-100%); /* Hide navbar */
+    .navbar:not(.show-nav) {
+        transform: translateY(-100%); /* Hide navbar */
+    }
 }
