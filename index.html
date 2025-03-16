@@ -75,32 +75,6 @@
         </div>
     </div>
 </section>
-    <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            menuToggle.querySelector('i').classList.toggle('bx-menu');
-            menuToggle.querySelector('i').classList.toggle('bx-x');
-
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const spans = document.querySelectorAll('h2 span');
-            let index = 0;
-
-            function showNextSpan() {
-                if (index < spans.length) {
-                    spans[index].classList.add('show');
-                    index++;
-                    setTimeout(showNextSpan, 1000); // Adjust delay (1000ms = 1 second)
-                }
-            }
-
-            showNextSpan(); // Start the sequence
-        });
-    </script>
 </body>
 
 </html>
