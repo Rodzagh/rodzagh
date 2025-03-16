@@ -30,7 +30,29 @@ a {
     animation:show-content 1.5s linear forwards;
     animation-delay:1.2s;
 }
+@-ms-viewport {
+		width: device-width;
+	}
 
+	body {
+		-ms-overflow-style: scrollbar;
+	}
+
+	@media screen and (max-width: 480px) {
+
+		html, body {
+			min-width: 320px;
+		}
+
+	}
+
+	html {
+		box-sizing: border-box;
+	}
+
+	*, *:before, *:after {
+		box-sizing: inherit;
+	}
 @keyframes show-content{
     100%{
         visibility:visible;
