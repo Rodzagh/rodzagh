@@ -35,7 +35,7 @@
      <div class="bar" style="--i:2;"></div>
      <div class="bar" style="--i:1;"></div>
  </div>
-<section class="home">
+<section class="home" id = "home">
     <div class="home-info">
         <h1>Ronald Isheanesu Chitsatso.</h1>
         <h2>I am
@@ -73,31 +73,42 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-
-    // Mobile Hide Navbar on Scroll
-    if (window.innerWidth <= 768) {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
         const navbar = document.querySelector('.navbar');
-        let lastScrollTop = 0;
 
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            if (scrollTop > lastScrollTop) {
-                navbar.classList.remove('show-nav');
-                navLinks.classList.remove('active'); // Close menu on scroll down
-            } else {
-                navbar.classList.add('show-nav');
-            }
-
-            lastScrollTop = scrollTop;
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
         });
-    }
-});
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetSectionId = link.getAttribute('data-section');
+                if (targetSectionId === "home"){
+                    e.preventDefault();
+                    document.getElementById("home").scrollIntoView({behavior: "smooth"});
+                }
+                navLinks.classList.remove('active'); // Close menu after clicking
+            });
+        });
+
+        // Mobile Hide Navbar on Scroll
+        if (window.innerWidth <= 768) {
+            let lastScrollTop = 0;
+
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop) {
+                    navbar.classList.remove('show-nav');
+                    navLinks.classList.remove('active'); // Close menu on scroll down
+                } else {
+                    navbar.classList.add('show-nav');
+                }
+
+                lastScrollTop = scrollTop;
+            });
+        }
+    });
 </script>
 </html>
