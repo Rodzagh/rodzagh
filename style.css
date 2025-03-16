@@ -83,12 +83,12 @@ a {
 }
 
 .home-info h2 span {
-position:relative;
+    position:relative;
     display: inline-block;
     color: transparent;
     -webkit-text-stroke:0.7px #7cf03d;
     animation:display-text 20s linear infinite;
-    animation-delay:calc(-5s * var(--i));
+    animation-delay: calc(-5s * var(--i)), calc(-5s * var(--i));
 }
 
 @keyframes display-text {
@@ -109,8 +109,8 @@ position:relative;
     border-right: 2px solid #7cf03d;
     color:#7cf03d;
     white-space:nowrap;
-    overflow:hidden;
     animation:fill-text 4s linear infinite;
+    overflow:hidden;
 }
 @keyframes fill-text {
     10%,
@@ -249,6 +249,36 @@ position:relative;
     transform: translateY(-100%);
     animation:show-bars 0.5s ease-in-out forwards;
     animation-delay: calc(0.1s * var(--i));
+}
+@media (max-width: 768px) {
+  .navbar ul {
+    flex-direction: column; /* Stack navigation items vertically */
+    align-items: flex-start; /* Align to the left */
+  }
+
+  .navbar ul li {
+    margin-left: 0; /* Remove left margin */
+    margin-bottom: 10px; /* Add bottom margin */
+  }
+
+  .home {
+    flex-direction: column; /* Stack content vertically */
+    padding: 50px 5% 0; /* Adjust padding */
+    align-items: center; /* center the elements */
+  }
+
+  .home-info h1 {
+    font-size: 40px; /* Adjust font size */
+  }
+
+  .home-img .img-box {
+    width: 80vw;
+    height: 80vw;
+  }
+
+  .home-img .img-box .img-item img{
+    top: 0px;
+  }
 }
 
 @keyframes show-bars{
