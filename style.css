@@ -12,8 +12,12 @@ a {
     text-decoration: none;
 }
 .all-sizes {
-    width: 100%; /* Ensures the section takes full width */
-    overflow: hidden; /* Prevents potential horizontal scrollbar */
+    width: 100%; 
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
 }
 .navbar {
     position:fixed;
@@ -82,12 +86,6 @@ a {
 			}
 
 		}
-.home {
-    display: flex;
-    flex-wrap: wrap; 
-    align-items: center;
-    padding: 20px;
-}
 .navbar .logo {
     font-size:30px;
     font-weight: 700;
