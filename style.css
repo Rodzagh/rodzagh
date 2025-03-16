@@ -8,7 +8,7 @@
 }
 
 a {
-    color:#1a233a;
+    color:#fff;
     text-decoration: none;
 }
 body {
@@ -30,7 +30,7 @@ body {
 .navbar {
     grid-area: nav;
     position:fixed;
-    left:2px;
+    left:4px;
     top:0;
     width:150%;
     padding: 25px 9%;
