@@ -92,8 +92,13 @@ position:relative;
 }
 
 @keyframes display-text {
-    25%,100%{
-        display:none;
+    25%, 100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    0%, 24%{
+        opacity:1;
+        visibility: visible;
     }
 }
 
