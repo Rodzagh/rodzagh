@@ -250,6 +250,24 @@ a {
     animation:show-bars 0.5s ease-in-out forwards;
     animation-delay: calc(0.1s * var(--i));
 }
+
+@media (max-width: 768px) {
+    .navbar .logo, .navbar ul li a {
+        font-size: 18px; /* Reduce navigation font size */
+    }
+
+    .home-info h1 {
+        font-size: 30px; /* Reduce main header font size */
+    }
+
+    .home-info h2 {
+        font-size: 24px; /* Reduce sub header font size */
+    }
+
+    .home-info p {
+        font-size: 14px; /* Reduce paragraph font size */
+    }
+}
 @media (max-width: 768px) {
   .navbar ul {
     flex-direction: column; /* Stack navigation items vertically */
