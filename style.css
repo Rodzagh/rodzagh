@@ -135,7 +135,8 @@ position:relative;
 }
 
 @keyframes display-text {
-    25%,100%{
+    25%,
+	100%{
         display:none;
     }
 }
