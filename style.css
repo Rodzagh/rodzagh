@@ -56,20 +56,21 @@ a {
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
     .nav-links {
-        display: none; /* Hide the list on mobile */
         flex-direction: column;
         position: absolute;
-        top: 70px; /* Adjust as needed */
-        left: 0;
-        width: 100%;
-        background-color: #1f242d; /* Or your background color */
-        text-align: center;
+        top: 70px;
+        right: 20px;
+        background-color: #1f242d;
+        text-align: right;
+        width: 50px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        padding: 10px;
     }
 
-    .nav-links.active {
-        display: flex; /* Show the list when active */
+    .nav-links .active {
+        display: flex; /* Display when active */
     }
-
     .nav-links li {
         margin: 10px 0;
     }
