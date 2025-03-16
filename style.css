@@ -11,20 +11,23 @@ a {
     color:#fff;
     text-decoration: none;
 }
-.navbar {
-    background-color: #1f242d; /* Or your desired background color */
-    color: #fff; /* Or your desired text color */
-    padding: 15px 20px; /* Adjust padding as needed */
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Space logo and links */
-    align-items: center; /* Vertically align items */
-    position: fixed; /* Keep it at the top */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100; /* Ensure it's above other elements */
-}
 
+.navbar {
+    grid-area: nav;
+    position:fixed;
+    left:4px;
+    top:0;
+    width:150%;
+    padding: 25px 9%;
+    display: none;
+    justify-content: space-between;
+    align-items:center;
+    z-index:100;
+    visibility:hidden;
+    opacity: 0;
+    animation:show-content 1.5s linear forwards;
+    animation-delay:1.2s;
+}
 .navbar .logo {
     font-size: 1.5em; /* Adjust logo size */
     font-weight: bold;
@@ -76,22 +79,7 @@ body {
     grid-template-rows: auto 1fr auto; /* Adjust rows as needed */
     height: 100vh; /* Fill viewport height */
 }
-.navbar {
-    grid-area: nav;
-    position:fixed;
-    left:4px;
-    top:0;
-    width:150%;
-    padding: 25px 9%;
-    display: none;
-    justify-content: space-between;
-    align-items:center;
-    z-index:100;
-    visibility:hidden;
-    opacity: 0;
-    animation:show-content 1.5s linear forwards;
-    animation-delay:1.2s;
-}
+
 
 .menu-toggle {
     display: none; /* Hidden by default */
