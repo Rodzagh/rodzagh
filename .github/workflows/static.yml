@@ -29,18 +29,29 @@ jobs:
             libtinfo6 cmake libffi-dev \
             libssl-dev python3-dev
 
+    - name: Install Android SDK
+      run: |
+        mkdir -p ~/android-sdk
+        cd ~/android-sdk
+        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+        unzip commandlinetools-linux-*.zip
+        rm commandlinetools-linux-*.zip
+        mkdir -p cmdline-tools/latest
+        mv cmdline-tools/* cmdline-tools/latest/
+        echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+        echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
+
+    - name: Accept licenses and install packages
+      run: |
+        yes | sdkmanager --licenses
+        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
+        sdkmanager "ndk;25.2.9519653"
+
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip wheel
         pip install "cython<3.0" "buildozer>=1.5.0"
         pip cache purge
-
-    - name: Accept Android licenses
-      run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses || true
-        $ANDROID_HOME/tools/bin/sdkmanager "build-tools;33.0.0" "platform-tools" "platforms;android-33"
 
     - name: Configure buildozer.spec
       run: |
@@ -54,11 +65,10 @@ jobs:
         version = 0.1
         requirements = python3==3.8,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
         android.archs = arm64-v8a
-        android.ndk_version = 25b
+        android.ndk_path = $ANDROID_HOME/ndk/25.2.9519653
+        android.sdk_dir = $ANDROID_HOME
         android.min_sdk_version = 21
         android.target_sdk_version = 33
-        android.sdk_dir = $ANDROID_HOME
-        android.ndk_dir = $ANDROID_HOME/ndk/25.2.9519653
         presplash.filename = %(source.dir)s/assets/icon.png
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
