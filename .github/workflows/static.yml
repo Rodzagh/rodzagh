@@ -36,14 +36,16 @@ jobs:
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
         unzip -q commandlinetools-linux-*.zip -d cmdline-tools/latest
         rm commandlinetools-linux-*.zip
+        mv cmdline-tools/latest/cmdline-tools/* cmdline-tools/latest/
+        rm -rf cmdline-tools/latest/cmdline-tools
         echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
+        echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
 
     - name: Accept licenses and install packages
       run: |
-        yes | sdkmanager --licenses || true
-        sdkmanager --install "platform-tools" "build-tools;34.0.0" "platforms;android-33"
-        sdkmanager --install "ndk;25.2.9519653"
+        yes | $ANDROID_HOME/cmdline-tools/latest/sdkmanager --licenses || true
+        $ANDROID_HOME/cmdline-tools/latest/sdkmanager --install "platform-tools" "build-tools;34.0.0" "platforms;android-33"
+        $ANDROID_HOME/cmdline-tools/latest/sdkmanager --install "ndk;25.2.9519653"
         echo "export NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
 
     - name: Install Python dependencies
