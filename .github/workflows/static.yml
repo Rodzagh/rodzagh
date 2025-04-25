@@ -49,9 +49,14 @@ jobs:
     - name: Initialize Buildozer environment
       run: |
         buildozer init || true
-        # Create symlink to system-installed python-for-android
+        # Get the actual python-for-android installation path
+        P4A_PATH=$(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))")
+        # Create the directory structure Buildozer expects
         mkdir -p ~/.buildozer/android/platform
-        ln -s $(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))") ~/.buildozer/android/platform/python-for-android
+        # Copy the entire python-for-android package to where Buildozer expects it
+        cp -r $P4A_PATH ~/.buildozer/android/platform/python-for-android
+        # Verify the copy worked
+        ls -la ~/.buildozer/android/platform/python-for-android
 
     - name: Configure buildozer.spec
       run: |
@@ -73,19 +78,29 @@ jobs:
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
 
-    - name: Debug environment
+    - name: Build APK with retries
       run: |
-        echo "Python version: $(python --version)"
-        echo "Buildozer version: $(buildozer --version)"
-        echo "Python-for-android path: $(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))")"
-        ls -la ~/.buildozer/android/platform
-
-    - name: Build APK
-      run: |
-        buildozer android clean
-        buildozer -v android debug 2>&1 | tee build.log
-        mkdir -p dist
-        find bin -name '*.apk' -exec cp {} dist/ \;
+        set +e
+        for i in {1..3}; do
+          echo "Attempt $i/3"
+          buildozer android clean
+          buildozer -v android debug 2>&1 | tee build.log
+          if [ -f bin/*.apk ]; then
+            echo "APK built successfully"
+            mkdir -p dist
+            find bin -name '*.apk' -exec cp {} dist/ \;
+            break
+          else
+            echo "Build attempt $i failed, retrying..."
+            sleep 5
+          fi
+        done
+        set -e
+        # Fail if no APK was built after all attempts
+        if [ ! -f dist/*.apk ]; then
+          echo "Build failed after 3 attempts"
+          exit 1
+        fi
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
