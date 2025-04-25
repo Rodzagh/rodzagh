@@ -18,7 +18,6 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
-        architecture: 'x64'
 
     - name: Install system dependencies
       run: |
@@ -27,17 +26,16 @@ jobs:
             zip unzip openjdk-17-jdk \
             git autoconf libtool pkg-config \
             zlib1g-dev libncurses-dev \
-            libtinfo6 libncurses6 \
-            cmake libffi-dev libssl-dev \
-            python3-dev libxml2-dev libxslt1-dev
+            libtinfo6 cmake libffi-dev \
+            libssl-dev python3-dev
 
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip wheel
-        pip install "cython<3.0" "buildozer>=1.4.0"
+        pip install "cython<3.0" "buildozer>=1.5.0"
         pip cache purge
 
-    - name: Create buildozer.spec
+    - name: Create modern buildozer.spec
       run: |
         cat > buildozer.spec <<EOL
         [app]
@@ -48,11 +46,16 @@ jobs:
         source.include_exts = py,png,jpg,kv,ttf,json
         version = 0.1
         requirements = python3==3.8,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
-        android.ndk = 23b
-        android.sdk = 33
-        android.api = 33
-        android.minapi = 21
-        android.arch = arm64-v8a
+        
+        # Modern architecture specification
+        android.archs = arm64-v8a
+        
+        # Updated SDK configuration
+        android.ndk_version = 23b
+        android.min_sdk_version = 21
+        android.target_sdk_version = 33
+        
+        # App assets
         presplash.filename = %(source.dir)s/assets/icon.png
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
