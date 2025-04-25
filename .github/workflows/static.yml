@@ -31,26 +31,25 @@ jobs:
 
     - name: Install Android SDK
       run: |
-        mkdir -p ~/android-sdk/cmdline-tools/latest
+        mkdir -p ~/android-sdk/cmdline-tools
         cd ~/android-sdk
-        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-        unzip commandlinetools-linux-*.zip -d cmdline-tools/latest
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+        unzip -q commandlinetools-linux-*.zip -d cmdline-tools/latest
         rm commandlinetools-linux-*.zip
-        mv cmdline-tools/latest/cmdline-tools/* cmdline-tools/latest/
-        rm -rf cmdline-tools/latest/cmdline-tools
         echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
         echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
 
     - name: Accept licenses and install packages
       run: |
-        yes | sdkmanager --licenses
-        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
-        sdkmanager "ndk;25.2.9519653"
+        yes | sdkmanager --licenses || true
+        sdkmanager --install "platform-tools" "build-tools;34.0.0" "platforms;android-33"
+        sdkmanager --install "ndk;25.2.9519653"
+        echo "export NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
 
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip wheel
-        pip install "cython<3.0" "buildozer>=1.5.0"
+        pip install --no-cache-dir "cython<3.0" "buildozer>=1.5.0"
         pip cache purge
 
     - name: Configure buildozer.spec
@@ -86,4 +85,12 @@ jobs:
         name: app-apk
         path: dist/*.apk
         if-no-files-found: error
+        retention-days: 7
+
+    - name: Upload build log
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: build-log
+        path: build.log
         retention-days: 7
