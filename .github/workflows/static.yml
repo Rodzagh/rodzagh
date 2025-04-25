@@ -32,8 +32,13 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip wheel
-        pip install "cython<3.0" "buildozer>=1.5.0"
+        pip install "cython<3.0" "buildozer>=1.5.0" "python-for-android==2023.8.25"
         pip cache purge
+
+    - name: Initialize Buildozer environment
+      run: |
+        buildozer init
+        buildozer android update  # Critical initialization step
 
     - name: Create modern buildozer.spec
       run: |
@@ -46,23 +51,16 @@ jobs:
         source.include_exts = py,png,jpg,kv,ttf,json
         version = 0.1
         requirements = python3==3.8,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
-        
-        # Modern architecture specification
         android.archs = arm64-v8a
-        
-        # Updated SDK configuration
         android.ndk_version = 23b
         android.min_sdk_version = 21
         android.target_sdk_version = 33
-        
-        # App assets
         presplash.filename = %(source.dir)s/assets/icon.png
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
 
     - name: Build APK
       run: |
-        buildozer android clean
         buildozer -v android debug 2>&1 | tee build.log
         mkdir -p dist
         find bin -name '*.apk' -exec cp {} dist/ \;
