@@ -14,10 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'
+        python-version: '3.9'
 
     - name: Install system dependencies
       run: |
@@ -49,7 +49,9 @@ jobs:
     - name: Initialize Buildozer environment
       run: |
         buildozer init || true
+        # Create symlink to system-installed python-for-android
         mkdir -p ~/.buildozer/android/platform
+        ln -s $(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))") ~/.buildozer/android/platform/python-for-android
 
     - name: Configure buildozer.spec
       run: |
@@ -61,7 +63,7 @@ jobs:
         source.dir = .
         source.include_exts = py,png,jpg,kv,ttf,json
         version = 0.1
-        requirements = python3==3.8,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
+        requirements = python3==3.9,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
         android.archs = arm64-v8a
         android.ndk_path = $ANDROID_HOME/ndk/25.2.9519653
         android.sdk_dir = $ANDROID_HOME
@@ -70,6 +72,13 @@ jobs:
         presplash.filename = %(source.dir)s/assets/icon.png
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
+
+    - name: Debug environment
+      run: |
+        echo "Python version: $(python --version)"
+        echo "Buildozer version: $(buildozer --version)"
+        echo "Python-for-android path: $(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))")"
+        ls -la ~/.buildozer/android/platform
 
     - name: Build APK
       run: |
