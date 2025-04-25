@@ -29,25 +29,16 @@ jobs:
             libtinfo6 cmake libffi-dev \
             libssl-dev python3-dev
 
-    - name: Install Android SDK
-      run: |
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        cd $HOME/android-sdk
-        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-        unzip -q commandlinetools-linux-*.zip -d cmdline-tools/latest
-        rm commandlinetools-linux-*.zip
-        mv cmdline-tools/latest/cmdline-tools/* cmdline-tools/latest/
-        rm -rf cmdline-tools/latest/cmdline-tools
-        echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "PATH=$HOME/android-sdk/cmdline-tools/latest:$PATH" >> $GITHUB_ENV
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        ndk-version: '25.2.9519653'
+        cmake-version: '3.22.1'
 
     - name: Accept licenses and install packages
       run: |
-        yes | ${ANDROID_HOME}/cmdline-tools/latest/sdkmanager --licenses || true
-        ${ANDROID_HOME}/cmdline-tools/latest/sdkmanager --install "platform-tools" "build-tools;34.0.0" "platforms;android-33"
-        ${ANDROID_HOME}/cmdline-tools/latest/sdkmanager --install "ndk;25.2.9519653"
-        echo "NDK_HOME=${ANDROID_HOME}/ndk/25.2.9519653" >> $GITHUB_ENV
-        echo "PATH=${ANDROID_HOME}/platform-tools:$PATH" >> $GITHUB_ENV
+        yes | sdkmanager --licenses
+        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
 
     - name: Install Python dependencies
       run: |
@@ -67,8 +58,8 @@ jobs:
         version = 0.1
         requirements = python3==3.8,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
         android.archs = arm64-v8a
-        android.ndk_path = ${ANDROID_HOME}/ndk/25.2.9519653
-        android.sdk_dir = ${ANDROID_HOME}
+        android.ndk_path = $ANDROID_HOME/ndk/25.2.9519653
+        android.sdk_dir = $ANDROID_HOME
         android.min_sdk_version = 21
         android.target_sdk_version = 33
         presplash.filename = %(source.dir)s/assets/icon.png
