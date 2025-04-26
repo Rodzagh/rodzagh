@@ -63,18 +63,26 @@ jobs:
             "kivy==2.2.1" \
             "kivymd==1.2.0"
 
-    - name: Initialize Buildozer environment
+    - name: Set up python-for-android
       run: |
-        buildozer init || true
         # Create the required directory structure
         mkdir -p ~/.buildozer/android/platform/python-for-android
         
-        # Copy python-for-android to the expected location
+        # Get the installed python-for-android location
         P4A_PATH=$(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))")
+        echo "Python-for-Android path: $P4A_PATH"
+        
+        # Copy the toolchain to where Buildozer expects it
         cp -r $P4A_PATH/* ~/.buildozer/android/platform/python-for-android/
         
-        # Verify the copy worked
+        # Create a symlink for the toolchain module
+        ln -sf $P4A_PATH/pythonforandroid ~/.buildozer/android/platform/python-for-android/pythonforandroid
+        
+        # Verify the setup
+        echo "Contents of python-for-android directory:"
         ls -la ~/.buildozer/android/platform/python-for-android/
+        echo "Toolchain exists:"
+        ls -la ~/.buildozer/android/platform/python-for-android/pythonforandroid/toolchain.py
 
     - name: Configure buildozer.spec
       run: |
@@ -98,8 +106,10 @@ jobs:
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
 
-    - name: Build APK
+    - name: Build APK with debug
       run: |
+        set -x  # Enable debug output
+        
         # Clean previous builds
         buildozer android clean
         
