@@ -14,10 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.9
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.10'
 
     - name: Install system dependencies
       run: |
@@ -34,11 +34,14 @@ jobs:
       with:
         ndk-version: '25.2.9519653'
         cmake-version: '3.22.1'
+        build-tools-version: '34.0.0'
 
-    - name: Accept licenses and install packages
+    - name: Accept licenses and verify SDK
       run: |
         yes | sdkmanager --licenses
-        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
+        sdkmanager --list_installed
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        ls -la $ANDROID_HOME/build-tools
 
     - name: Install Python dependencies
       run: |
@@ -68,12 +71,13 @@ jobs:
         source.dir = .
         source.include_exts = py,png,jpg,kv,ttf,json
         version = 0.1
-        requirements = python3==3.9,kivy==2.1.0,kivymd==1.1.1,openssl,sqlite3,pillow
+        requirements = python3==3.10,kivy==2.2.1,kivymd==1.2.0,openssl,sqlite3,pillow
         android.archs = arm64-v8a
         android.ndk_path = $ANDROID_HOME/ndk/25.2.9519653
         android.sdk_dir = $ANDROID_HOME
         android.min_sdk_version = 21
         android.target_sdk_version = 33
+        android.build_tools_version = 34.0.0
         presplash.filename = %(source.dir)s/assets/icon.png
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
@@ -99,6 +103,7 @@ jobs:
         # Fail if no APK was built after all attempts
         if [ ! -f dist/*.apk ]; then
           echo "Build failed after 3 attempts"
+          cat build.log
           exit 1
         fi
 
