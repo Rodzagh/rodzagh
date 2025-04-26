@@ -48,18 +48,13 @@ jobs:
         # Install exact versions
         yes | sdkmanager --install "platform-tools" "build-tools;34.0.0" "platforms;android-33" "cmdline-tools;latest"
         
+        # Verify AIDL is working
+        $ANDROID_HOME/build-tools/34.0.0/aidl --version
+        
         # Set environment variables
         echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
         echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
-        echo "PATH=$ANDROID_HOME/build-tools/34.0.0:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH" >> $GITHUB_ENV
-
-    - name: Verify Android tools
-      run: |
-        echo "=== Android Tools Verification ==="
-        which aidl && aidl --version
-        which aapt && aapt v
-        which zipalign && zipalign -v
-        which adb && adb version
+        echo "PATH=$ANDROID_HOME/build-tools/34.0.0:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
 
     - name: Install Python dependencies
       run: |
@@ -101,11 +96,8 @@ jobs:
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
 
-    - name: Build APK with debug output
+    - name: Build APK
       run: |
-        set -x  # Enable debug output
-        export PATH=$ANDROID_HOME/build-tools/34.0.0:$PATH
-        
         # Clean previous builds
         buildozer android clean
         
