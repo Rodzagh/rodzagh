@@ -36,23 +36,37 @@ jobs:
         cmake-version: '3.22.1'
         build-tools-version: '34.0.0'
 
-    - name: Accept all licenses and install packages
+    - name: Configure Android environment
       run: |
+        # Accept all necessary licenses
         mkdir -p "$ANDROID_HOME/licenses"
         echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
         echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
         
+        # Install required packages
         yes | sdkmanager --licenses
         sdkmanager --update
-        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33"
-        sdkmanager --list_installed
+        sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-33" "cmdline-tools;latest"
+        
+        # Verify AIDL is installed
+        $ANDROID_HOME/build-tools/34.0.0/aidl --version || echo "AIDL check failed"
+        
+        # Add build-tools to PATH
+        echo "$ANDROID_HOME/build-tools/34.0.0" >> $GITHUB_PATH
+        echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
 
     - name: Verify Android tools
       run: |
-        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "--- Installed Android tools ---"
+        sdkmanager --list_installed
+        echo "--- Build tools contents ---"
         ls -la $ANDROID_HOME/build-tools/34.0.0
-        $ANDROID_HOME/build-tools/34.0.0/aidl --version
-        echo "PATH: $PATH"
+        echo "--- AIDL version ---"
+        aidl --version
+        echo "--- Environment variables ---"
+        env | grep ANDROID
+        echo "--- PATH ---"
+        echo $PATH
 
     - name: Install Python dependencies
       run: |
@@ -63,11 +77,9 @@ jobs:
     - name: Initialize Buildozer environment
       run: |
         buildozer init || true
-        # Get the actual python-for-android installation path
+        # Setup python-for-android
         P4A_PATH=$(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))")
-        # Create the directory structure Buildozer expects
         mkdir -p ~/.buildozer/android/platform
-        # Copy the entire python-for-android package to where Buildozer expects it
         cp -r $P4A_PATH ~/.buildozer/android/platform/python-for-android
 
     - name: Configure buildozer.spec
@@ -93,12 +105,19 @@ jobs:
 
     - name: Build APK
       run: |
+        # Ensure build-tools are in PATH
         export PATH=$ANDROID_HOME/build-tools/34.0.0:$PATH
+        
+        # Clean and build
         buildozer android clean
         buildozer -v android debug 2>&1 | tee build.log
+        
+        # Verify APK was created
         mkdir -p dist
-        find bin -name '*.apk' -exec cp {} dist/ \;
-        if [ ! -f dist/*.apk ]; then
+        if ls bin/*.apk 1> /dev/null 2>&1; then
+          cp bin/*.apk dist/
+          echo "APK built successfully"
+        else
           echo "APK build failed!"
           cat build.log
           exit 1
