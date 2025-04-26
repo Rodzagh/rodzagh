@@ -8,7 +8,7 @@ on:
 jobs:
   build-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 90  # Increased timeout for complex builds
+    timeout-minutes: 90
 
     steps:
     - name: Checkout code
@@ -29,51 +29,33 @@ jobs:
             libtinfo6 cmake libffi-dev \
             libssl-dev python3-dev
 
-    - name: Set up Android SDK with precise versions
+    - name: Set up Android SDK
       uses: android-actions/setup-android@v2
       with:
         ndk-version: '25.2.9519653'
         cmake-version: '3.22.1'
         build-tools-version: '34.0.0'
         platform-version: '33'
-        disable-confirmation: true  # Automatically accept licenses
+        disable-confirmation: true
 
     - name: Configure Android environment
       run: |
-        # Manually accept all licenses to prevent issues
+        # Accept all licenses
         mkdir -p "$ANDROID_HOME/licenses"
         echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
         echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
         
-        # Install exact versions of required packages
+        # Install exact versions
         yes | sdkmanager --install "platform-tools" "build-tools;34.0.0" "platforms;android-33" "cmdline-tools;latest"
         
-        # Verify critical tools are available
-        echo "--- AIDL Version Check ---"
-        $ANDROID_HOME/build-tools/34.0.0/aidl --version || echo "AIDL check failed"
-        
-        # Add all necessary paths to environment
-        echo "$ANDROID_HOME/build-tools/34.0.0" >> $GITHUB_PATH
-        echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
-        echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+        # Set environment variables
         echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
         echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
+        echo "PATH=$ANDROID_HOME/build-tools/34.0.0:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH" >> $GITHUB_ENV
 
-    - name: Verify environment setup
+    - name: Verify Android tools
       run: |
-        echo "=== Environment Verification ==="
-        echo "ANDROID_HOME: $ANDROID_HOME"
-        echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-        echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
-        echo "PATH: $PATH"
-        
-        echo "--- Installed Packages ---"
-        sdkmanager --list_installed
-        
-        echo "--- Build Tools Contents ---"
-        ls -la $ANDROID_HOME/build-tools/34.0.0
-        
-        echo "--- Critical Tool Checks ---"
+        echo "=== Android Tools Verification ==="
         which aidl && aidl --version
         which aapt && aapt v
         which zipalign && zipalign -v
@@ -88,17 +70,16 @@ jobs:
             "python-for-android==2024.1.21" \
             "kivy==2.2.1" \
             "kivymd==1.2.0"
-        pip cache purge
 
     - name: Initialize Buildozer
       run: |
         buildozer init || true
-        # Ensure python-for-android is properly linked
+        # Fix python-for-android location
         P4A_PATH=$(python -c "import os, pythonforandroid; print(os.path.dirname(pythonforandroid.__file__))")
         mkdir -p ~/.buildozer/android/platform
         ln -sfn $P4A_PATH ~/.buildozer/android/platform/python-for-android
 
-    - name: Configure buildozer.spec with precise paths
+    - name: Configure buildozer.spec
       run: |
         cat > buildozer.spec <<EOL
         [app]
@@ -120,23 +101,22 @@ jobs:
         icon.filename = %(source.dir)s/assets/icon.png
         EOL
 
-    - name: Build APK with comprehensive logging
+    - name: Build APK with debug output
       run: |
         set -x  # Enable debug output
         export PATH=$ANDROID_HOME/build-tools/34.0.0:$PATH
         
-        echo "=== Starting Build Process ==="
+        # Clean previous builds
         buildozer android clean
         
-        echo "=== Full Debug Build ==="
+        # Run build with full logging
         buildozer -v android debug 2>&1 | tee build.log
         
-        echo "=== Verifying Output ==="
+        # Verify APK was created
         mkdir -p dist
         if ls bin/*.apk 1> /dev/null 2>&1; then
           echo "APK built successfully!"
           cp bin/*.apk dist/
-          ls -la dist/
         else
           echo "APK build failed!"
           echo "=== Build Log Tail ==="
@@ -144,18 +124,12 @@ jobs:
           exit 1
         fi
 
-    - name: Upload APK artifact
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: app-apk
-        path: dist/*.apk
+        name: app-artifacts
+        path: |
+          dist/*.apk
+          build.log
         if-no-files-found: error
-        retention-days: 7
-
-    - name: Upload full build log
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: build-log
-        path: build.log
         retention-days: 7
