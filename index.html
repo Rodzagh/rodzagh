@@ -5,117 +5,528 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio Website</title>
+    <title>Ronald Chitsatso | Portfolio</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a1f44;
+            --secondary: #1a3a8f;
+            --accent: #4cc9f0;
+            --dark: #010814;
+            --light: #f8f9fa;
+            --text: #333;
+            --text-light: #777;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar.scrolled {
+            padding: 15px 10%;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Bars Animation */
+        .bars-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .bars-animation .bar {
+            width: 10px;
+            height: 100px;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            margin: 0 5px;
+            border-radius: 5px;
+            animation: barAnimation 1.5s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.1s);
+            transform-origin: bottom;
+        }
+
+        @keyframes barAnimation {
+            0%, 100% {
+                transform: scaleY(0.5);
+            }
+            50% {
+                transform: scaleY(1.5);
+            }
+        }
+
+        /* Home Section */
+        .home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            padding-top: 80px;
+        }
+
+        .home-info {
+            flex: 1;
+            padding-right: 50px;
+        }
+
+        .home-info h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .home-info h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text-light);
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .home-info h2 span {
+            display: inline-block;
+            position: relative;
+            color: var(--primary);
+            animation: textRotate 12s linear infinite;
+            animation-delay: calc(var(--i) * 2s);
+            opacity: 0;
+        }
+
+        @keyframes textRotate {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            5%, 15% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            20%, 100% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+        }
+
+        .home-info p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: var(--text-light);
+        }
+
+        .btn-sci {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(10, 31, 68, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(10, 31, 68, 0.4);
+        }
+
+        .sci {
+            display: flex;
+            gap: 15px;
+        }
+
+        .sci a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(10, 31, 68, 0.1);
+            border-radius: 50%;
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .sci a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .home-img {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-box {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .navbar {
+                padding: 20px 5%;
+            }
+
+            .home {
+                padding: 0 5%;
+                padding-top: 80px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .home-info h1 {
+                font-size: 2.8rem;
+            }
+
+            .home-info h2 {
+                font-size: 1.5rem;
+            }
+
+            .img-box {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 40px;
+                transition: all 0.5s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+
+            .home {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 120px;
+                padding-bottom: 60px;
+            }
+
+            .home-info {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+
+            .btn-sci {
+                justify-content: center;
+            }
+
+            .img-box {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .home-info h1 {
+                font-size: 2.2rem;
+            }
+
+            .home-info h2 {
+                font-size: 1.3rem;
+                height: 50px;
+            }
+
+            .home-info p {
+                font-size: 1rem;
+            }
+
+            .btn-sci {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .bars-animation .bar {
+                width: 6px;
+                margin: 0 3px;
+            }
+        }
+    </style>
 </head>
 
 <body>
- <nav class="navbar">
-     <a href="#" class="logo">Portfolio.</a>
-     <ul class="nav-links">
-     <li><a href="#">Home</a></li>
-     <li><a href="https://ronchits.github.io/website/">About</a></li>
-     <li><a href="https://ronchits.github.io/website/">Portfolio</a></li>
-     <li><a href="https://ronchits.github.io/website/">Service</a></li>
-     <li><a href="mailto:r.i.chitsatso@gmail.com">Contact</a></li>
-    </ul>
-     <div class="menu-toggle">
-     <div class="bar"></div>
-     <div class="bar"></div>
-    </div>
- </nav>
+    <nav class="navbar">
+        <a href="#" class="logo">Portfolio.</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="https://ronchits.github.io/website/">About</a></li>
+            <li><a href="https://ronchits.github.io/website/">Portfolio</a></li>
+            <li><a href="https://ronchits.github.io/website/">Service</a></li>
+            <li><a href="mailto:r.i.chitsatso@gmail.com">Contact</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
     
- <div class="bars-animation">
-     <div class="bar" style="--i:6;"></div>
-     <div class="bar" style="--i:5;"></div>
-     <div class="bar" style="--i:4;"></div>
-     <div class="bar" style="--i:3;"></div>
-     <div class="bar" style="--i:2;"></div>
-     <div class="bar" style="--i:1;"></div>
- </div>
-<section class="home" id = "home">
-    <div class="home-info">
-        <h1>Ronald Isheanesu Chitsatso.</h1>
-        <h2>I am
-            <span style="--i:6;" data-text="Chess Player.">Chess Player.</span>
-            <span style="--i:5;" data-text="Financial Engineer.">Financial Engineer.</span>
-            <span style="--i:4;" data-text="Data Analyst.">Data Analyst.</span>
-            <span style="--i:3;" data-text="Python Expert.">Python Expert.</span>
-            <span style="--i:2;" data-text="Youtuber.">Youtuber.</span>
-            <span style="--i:1;" data-text="Financial Analyst.">Financial Analyst.</span>
-        </h2>
-        <p>Welcome! I'm a data-driven professional with a background in Financial Engineering. 
-            I'm passionate about finding patterns in data and eager to apply those skills in
-            a challenging and rewarding career opportunity.</p>
-        <div class="btn-sci">
-            <a href="Ronald I Chitsatso ResumeCV.pdf" class="btn">Download CV</a>
-            <div class="sci">
-            <a href="https://github.com/RonChits" class="icon brands alt fa-github"><i class='bx bxl-github'></i></a>
-            <a href="https://www.linkedin.com/in/ronald-chitsatso-6b491a237/"><i class='bx bxl-linkedin' ></i></a>
-            <a href="https://www.youtube.com/@RonaldChitsatso"><i class='bx bxl-youtube' ></i></a>
-            <a href="https://www.facebook.com/ronald.chitsatso.1?mibextid=ZbWKwL"><i class='bx bxl-facebook-circle' ></i></a>
-            <a href="mailto:r.i.chitsatso@gmail.com"><i class='bx bx-envelope'></i></a>
+    <div class="bars-animation">
+        <div class="bar" style="--i:6;"></div>
+        <div class="bar" style="--i:5;"></div>
+        <div class="bar" style="--i:4;"></div>
+        <div class="bar" style="--i:3;"></div>
+        <div class="bar" style="--i:2;"></div>
+        <div class="bar" style="--i:1;"></div>
+    </div>
 
+    <section class="home" id="home">
+        <div class="home-info">
+            <h1>Ronald Isheanesu Chitsatso.</h1>
+            <h2>I am
+                <span style="--i:6;" data-text="Chess Player.">Chess Player.</span>
+                <span style="--i:5;" data-text="Financial Engineer.">Financial Engineer.</span>
+                <span style="--i:4;" data-text="Data Analyst.">Data Analyst.</span>
+                <span style="--i:3;" data-text="Python Expert.">Python Expert.</span>
+                <span style="--i:2;" data-text="Youtuber.">Youtuber.</span>
+                <span style="--i:1;" data-text="Financial Analyst.">Financial Analyst.</span>
+            </h2>
+            <p>Welcome! I'm a data-driven professional with a background in Financial Engineering. 
+                I'm passionate about finding patterns in data and eager to apply those skills in
+                a challenging and rewarding career opportunity.</p>
+            <div class="btn-sci">
+                <a href="Ronald I Chitsatso ResumeCV.pdf" class="btn">Download CV</a>
+                <div class="sci">
+                    <a href="https://github.com/RonChits" class="icon brands alt fa-github"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.linkedin.com/in/ronald-chitsatso-6b491a237/"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://www.youtube.com/@RonaldChitsatso"><i class='bx bxl-youtube'></i></a>
+                    <a href="https://www.facebook.com/ronald.chitsatso.1?mibextid=ZbWKwL"><i class='bx bxl-facebook-circle'></i></a>
+                    <a href="mailto:r.i.chitsatso@gmail.com"><i class='bx bx-envelope'></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="home-img">
-        <div class="img-box">
-            <div class="img-item">
-                <img src="DSC_2033.jpg" alt="">
+        <div class="home-img">
+            <div class="img-box">
+                <div class="img-item">
+                    <img src="DSC_2033.jpg" alt="Ronald Chitsatso">
+                </div>
             </div>
         </div>
-    </div>
-</section>
-</body>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navbar = document.querySelector('.navbar');
+    </section>
 
-    menuToggle.addEventListener('click', toggleMenu);
-    menuToggle.addEventListener('touchstart', toggleMenu);
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navbar = document.querySelector('.navbar');
+            const homeSection = document.getElementById('home');
+            const navLinksItems = document.querySelectorAll('.nav-links a');
 
-    function toggleMenu(event) {
-        const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
-        menuToggle.setAttribute('aria-expanded', !expanded);
-        navLinks.classList.toggle('active');
-        event.preventDefault();
-    }
+            // Mobile menu toggle
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
 
-    navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', (e) => {
-            navLinks.classList.remove('active'); // Hide menu on link click
-            menuToggle.setAttribute('aria-expanded', false); // Update aria
-            const targetSectionId = link.getAttribute('data-section');
-            if (targetSectionId === "home") {
+            // Close menu when clicking on a link
+            navLinksItems.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Smooth scroll for home link
+            document.querySelector('a[href="#home"]').addEventListener('click', (e) => {
                 e.preventDefault();
-                document.getElementById("home").scrollIntoView({ behavior: "smooth" });
+                homeSection.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Animation for rotating text
+            const rotatingText = document.querySelector('.home-info h2');
+            const spans = rotatingText.querySelectorAll('span');
+            
+            spans.forEach((span, index) => {
+                span.style.animationDelay = `${index * 2}s`;
+            });
+
+            // Optimize animations for performance
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.home-info, .img-box').forEach(el => {
+                    observer.observe(el);
+                });
             }
         });
-    });
-
-    if (window.innerWidth <= 768) {
-        navLinks.classList.remove('active'); // Ensure menu is initially hidden
-        let lastScrollTop = 0;
-
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            if (scrollTop > lastScrollTop) {
-                navbar.classList.remove('show-nav');
-                navLinks.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', false);
-            } else {
-                navbar.classList.add('show-nav');
-            }
-
-            lastScrollTop = scrollTop;
-        });
-    }
-});
-</script>
+    </script>
+</body>
 </html>
