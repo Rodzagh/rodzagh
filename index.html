@@ -251,6 +251,11 @@
             animation: fadeIn 1s ease 0.9s forwards, float 6s ease-in-out infinite;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
@@ -391,7 +396,9 @@
         <div class="home-img">
             <div class="img-box">
                 <div class="img-item">
-                    <img src="DSC_2033.jpg" alt="Ronald Chitsatso">
+                    <!-- Test with placeholder first -->
+                    <!-- After confirming this works, replace with your image: -->
+                    <img src="DSC_2033.jpg" alt="Ronald Chitsatso"> -->
                 </div>
             </div>
         </div>
