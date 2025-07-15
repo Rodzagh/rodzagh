@@ -328,6 +328,7 @@
             margin: 40px 0; /* Space above and below ad */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
+            min-height: 80px; /* Give ads a minimum height to avoid collapsing */
         }
 
         .ad-container.fixed-bottom {
@@ -338,6 +339,7 @@
             z-index: 99; /* Below navbar, above main content */
             margin: 0;
             padding: 10px;
+            min-height: 70px; /* Minimum height for fixed ad */
         }
 
         /* Adjustments for main content when fixed ad is present */
@@ -396,7 +398,6 @@
             .sci { justify-content: center; }
         }
     </style>
-    <script type='text/javascript' src='//pl27172833.profitableratecpm.com/a2/1d/e9/a21de98651e67f2ae9d296d6c276371c.js'></script>
 </head>
 <body>
     <nav class="navbar">
@@ -438,7 +439,7 @@
                         <a href="https://www.linkedin.com/in/ronald-chitsatso-6b491a237/"><i class='bx bxl-linkedin'></i></a>
                         <a href="https://www.youtube.com/@RonaldChitsatso"><i class='bx bxl-youtube'></i></a>
                         <a href="https://www.facebook.com/ronald.chitsatso.1?mibextid=ZbWKwL"><i class='bx bxl-facebook-circle'></i></a>
-                        <a href="mailto:r.i.chitsatso@gmail.com"><i class='bx bx-envelope'></i></a>
+                        <a href="mailto:r.i.chitsatso@gmail.0"><i class='bx bx-envelope'></i></a>
                     </div>
                 </div>
             </div>
@@ -451,18 +452,29 @@
             </div>
         </section>
 
+        ---
+
+        ## In-Content Ad
+
+        This ad is placed directly within the flow of your website's content, making it visible as users scroll down. It's often effective as it appears naturally alongside your information.
+
         <section class="ad-container">
-            <h3>Advertisement</h3>
-            <script async="async" data-cfasync="false" src="//pl27172851.profitableratecpm.com/4bf3b308356c71157ea8e8f1387eedee/invoke.js"></script>
-            <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
+            <script type='text/javascript' src='//pl27172833.profitableratecpm.com/a2/1d/e9/a21de98651e67f2ae9d296d6c276371c.js'></script>
         </section>
+
+        ---
 
         <section class="additional-content" style="min-height: 50vh; display: flex; align-items: center; justify-content: center; background-color: #2a2f38; margin-top: 40px; padding: 20px;">
-            <p style="font-size: 1.2rem;">This is an example of additional content on your page.</p>
+            <p style="font-size: 1.2rem;">This is an example of additional content on your page. You can add more sections like "About," "Portfolio," or "Services" here. The ads are designed to integrate around your primary content.</p>
         </section>
 
-    </div> <div class="ad-container fixed-bottom">
-        <h3>Bottom Banner Ad</h3>
+    </div> ---
+
+    ## Fixed Bottom Banner Ad
+
+    This ad will remain visible at the bottom of the screen as the user scrolls, providing a persistent advertising presence. We've added padding to the `body` to ensure it doesn't overlap your main content.
+
+    <div class="ad-container fixed-bottom">
         <script async="async" data-cfasync="false" src="//pl27172851.profitableratecpm.com/4bf3b308356c71157ea8e8f1387eedee/invoke.js"></script>
         <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
     </div>
