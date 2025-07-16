@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ronald Chitsatso | Portfolio</title>
+    <title>Ronald Chitsatso | Portfolio.</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -26,8 +26,8 @@
             background: var(--dark);
             color: var(--light);
             overflow-x: hidden;
-            /* Adjust padding-bottom to ensure content is not hidden by the fixed bottom ad */
-            padding-bottom: 180px; /* Adjusted for potentially taller banner on larger screens */
+            /* Default padding for the ad. Will be dynamically adjusted by JS. */
+            padding-bottom: 0; 
         }
 
         .navbar {
@@ -161,6 +161,7 @@
             margin-bottom: 1.5rem;
             height: 2.5rem;
             overflow: hidden;
+            position: relative; /* Added for correct positioning of spans */
         }
 
         .home-info h2 span {
@@ -320,54 +321,59 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 101; /* Ensure it's above the navbar */
+            z-index: 101; 
             background-color: #2a2f38;
-            padding: 10px; /* Reduced padding for mobile optimization */
-            /* min-height: 65px; -- REMOVED: Let max-height and content determine height */
-            max-height: 180px; /* NEW: Increased max-height for more content visibility */
-            overflow-y: auto; /* Make the content inside the banner scrollable if it exceeds max-height */
-            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3); /* Shadow to make it stand out */
+            padding: 10px; 
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3); 
             display: flex;
-            flex-direction: column; /* Stack content vertically */
-            justify-content: flex-start; /* NEW: Align content to the top for better scrolling */
-            align-items: center; /* Center horizontally */
+            flex-direction: column; 
+            justify-content: center; /* Center content vertically within the ad container */
+            align-items: center; 
             text-align: center;
             color: #ccc;
             font-size: 0.9rem;
-            box-sizing: border-box; /* Crucial for consistent sizing */
+            box-sizing: border-box; 
+            /* Set a fixed height that can accommodate various ad sizes */
+            height: auto; /* Changed to auto to allow content to dictate height, within limits */
+            min-height: 50px; /* Minimum height for smaller ads */
+            max-height: 250px; /* Increased max-height to accommodate common banner ad sizes */
+            overflow: hidden; /* Hide overflow, the inner ad content might handle its own scroll */
         }
 
         .close-ad-btn {
             position: absolute;
-            top: 5px; /* Adjust as needed */
-            right: 10px; /* Adjust as needed */
-            background: rgba(255, 255, 255, 0.3); /* Slightly more prominent background */
+            top: 5px; 
+            right: 10px; 
+            background: rgba(255, 255, 255, 0.3); 
             color: var(--light);
             border: none;
             border-radius: 50%;
-            width: 38px; /* Increased size for easier tapping on mobile */
-            height: 38px; /* Increased size for easier tapping on mobile */
+            width: 38px; 
+            height: 38px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.6rem; /* Larger 'x' for better visibility */
+            font-size: 1.6rem; 
             cursor: pointer;
             transition: background 0.3s ease;
-            line-height: 1; /* Ensures 'x' is vertically centered */
+            line-height: 1; 
             padding: 0;
             box-sizing: border-box;
-            z-index: 102; /* Ensure close button is above the ad content if ad has its own z-index */
+            z-index: 102; 
         }
 
         .close-ad-btn:hover {
-            background: rgba(255, 255, 255, 0.5); /* More prominent hover effect */
+            background: rgba(255, 255, 255, 0.5); 
         }
 
-        /* Ensure the ad content div fits and potentially scrolls within the container */
+        /* Ensure the ad content div fits and adapts within the container */
         .ad-container.fixed-bottom #container-4bf3b308356c71157ea8e8f1387eedee {
-            width: 100%; /* Ensure the ad content takes full width */
-            /* Let the ad content determine its own height */
-            flex-shrink: 0; /* Prevents shrinking if content wants to be taller */
+            width: 100%; 
+            height: auto; /* Allow the ad content to determine its height */
+            display: flex; /* Use flexbox to center its content */
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1; /* Allow it to grow and take available space */
         }
 
         .main-content {
@@ -411,22 +417,8 @@
             .home-info h1 { font-size: 2rem; }
             .home-info h2 { font-size: 1.3rem; height: 2.2rem; }
             .home-img { width: 250px; height: 250px; }
-            body {
-                /* Ensure enough padding for the fixed banner on small screens */
-                padding-bottom: 150px; /* Adjusted for potentially taller banner on small screens */
-            }
-            .ad-container.fixed-bottom {
-                padding: 8px; /* Slightly more padding for content within the ad */
-                /* min-height: 70px; -- REMOVED */
-                max-height: 140px; /* NEW: Adjusted max-height for very small screens */
-            }
-            .close-ad-btn {
-                width: 42px; /* Even larger tap area for very small mobile screens */
-                height: 42px;
-                font-size: 1.8rem; /* Even larger 'x' */
-                top: 3px; /* Slightly adjust position */
-                right: 7px; /* Slightly adjust position */
-            }
+            /* No fixed padding-bottom here, let JS handle it */
+            body { padding-bottom: 0; } 
         }
 
         @media (max-width: 576px) {
@@ -491,8 +483,8 @@
 
     <div class="ad-container fixed-bottom" id="fixedBottomAd">
         <button class="close-ad-btn" id="closeAdButton">×</button>
-        <script async="async" data-cfasync="false" src="//pl27172851.profitableratecpm.com/4bf3b308356c71157ea8e8f1387eedee/invoke.js"></script>
         <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
+        <script async="async" data-cfasync="false" src="//pl27172851.profitableratecpm.com/4bf3b308356c71157ea8e8f1387eedee/invoke.js"></script>
     </div>
 
     <script>
@@ -502,6 +494,26 @@
             const navbar = document.querySelector('.navbar');
             const fixedBottomAd = document.getElementById('fixedBottomAd');
             const closeAdButton = document.getElementById('closeAdButton');
+            const body = document.body;
+
+            // Function to adjust body padding based on ad visibility
+            function adjustBodyPadding() {
+                if (fixedBottomAd && fixedBottomAd.style.display !== 'none') {
+                    // Give a slight delay to ensure the ad content has rendered and taken its height
+                    setTimeout(() => {
+                        const adHeight = fixedBottomAd.offsetHeight;
+                        body.style.paddingBottom = `${adHeight}px`;
+                    }, 100); 
+                } else {
+                    body.style.paddingBottom = '0';
+                }
+            }
+
+            // Initial adjustment
+            adjustBodyPadding();
+
+            // Adjust padding when the window is resized (to handle orientation changes or dynamic ad sizes)
+            window.addEventListener('resize', adjustBodyPadding);
 
             // Toggle navigation menu on mobile
             menuToggle.addEventListener('click', () => {
@@ -534,15 +546,15 @@
                     menuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
                 }
+                // Re-adjust padding on resize for responsiveness
+                adjustBodyPadding();
             });
 
             // Fixed Bottom Ad close logic
             if (closeAdButton && fixedBottomAd) {
                 closeAdButton.addEventListener('click', () => {
                     fixedBottomAd.style.display = 'none';
-                    // Optional: adjust padding-bottom of body if the ad is closed
-                    // This prevents a sudden jump in layout.
-                    document.body.style.paddingBottom = '0';
+                    adjustBodyPadding(); // Adjust padding immediately after closing
                 });
             }
         });
