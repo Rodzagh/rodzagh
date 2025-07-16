@@ -26,11 +26,9 @@
             background: var(--dark);
             color: var(--light);
             overflow-x: hidden;
-            /* Add some padding to the bottom to account for the fixed ad */
-            padding-bottom: 90px; /* Adjust this value based on your ad height */
+            padding-bottom: 90px;
         }
 
-        /* ===== NAVBAR ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -121,7 +119,6 @@
             transform: translateY(-8px) rotate(-45deg);
         }
 
-        /* ===== HERO SECTION ===== */
         .home {
             min-height: 100vh;
             padding: 0 5%;
@@ -129,7 +126,7 @@
             align-items: center;
             justify-content: space-between;
             position: relative;
-            padding-top: 80px; /* Add padding to account for fixed navbar */
+            padding-top: 80px;
         }
 
         .home-info {
@@ -245,7 +242,6 @@
             box-shadow: var(--shadow);
         }
 
-        /* ===== PROFILE IMAGE ===== */
         .home-img {
             position: relative;
             width: 400px;
@@ -317,20 +313,20 @@
             object-fit: cover;
         }
 
-        /* ===== AD STYLES ===== */
         .ad-container {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #2a2f38; /* A slightly lighter dark for contrast */
+            background-color: #2a2f38;
             padding: 15px;
-            margin: 40px 0; /* Space above and below ad */
+            margin: 40px 0;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
-            min-height: 80px; /* Give ads a minimum height to avoid collapsing */
+            min-height: 80px;
             font-size: 0.9rem;
             color: #ccc;
+            position: relative;
         }
 
         .ad-container.fixed-bottom {
@@ -338,18 +334,41 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 99; /* Below navbar, above main content */
+            z-index: 99;
             margin: 0;
             padding: 10px;
-            min-height: 70px; /* Minimum height for fixed ad */
+            min-height: 70px;
+            box-sizing: border-box;
         }
 
-        /* Adjustments for main content when fixed ad is present */
+        .close-ad-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .close-ad-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .main-content {
-            padding: 20px 5%; /* Adjust padding to give space around content */
+            padding: 20px 5%;
         }
 
-        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 1200px) {
             .home-info h1 { font-size: 2.5rem; }
             .home-info h2 { font-size: 1.5rem; }
@@ -388,10 +407,10 @@
             .home-info h2 { font-size: 1.3rem; height: 2.2rem; }
             .home-img { width: 250px; height: 250px; }
             body {
-                padding-bottom: 70px; /* Adjust for smaller fixed ad on mobile */
+                padding-bottom: 70px;
             }
             .ad-container.fixed-bottom {
-                padding: 5px; /* Smaller padding for mobile fixed ad */
+                padding: 5px;
             }
         }
 
@@ -453,9 +472,10 @@
                 </div>
             </div>
         </section>
-    </div> 
-    <div class="ad-container fixed-bottom">
-        
+    </div>
+
+    <div class="ad-container fixed-bottom" id="fixedBottomAd">
+        <button class="close-ad-btn" id="closeAdButton">×</button>
         <script async="async" data-cfasync="false" src="//pl27172851.profitableratecpm.com/4bf3b308356c71157ea8e8f1387eedee/invoke.js"></script>
         <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
     </div>
@@ -465,14 +485,14 @@
             const menuToggle = document.querySelector('.menu-toggle');
             const navLinks = document.querySelector('.nav-links');
             const navbar = document.querySelector('.navbar');
+            const fixedBottomAd = document.getElementById('fixedBottomAd');
+            const closeAdButton = document.getElementById('closeAdButton');
 
-            // Toggle Mobile Menu
             menuToggle.addEventListener('click', () => {
                 menuToggle.classList.toggle('active');
                 navLinks.classList.toggle('active');
             });
 
-            // Close Menu When Clicking a Link (Mobile)
             navLinks.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     if (window.innerWidth <= 768) {
@@ -482,7 +502,6 @@
                 });
             });
 
-            // Navbar Scroll Effect
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     navbar.classList.add('scrolled');
@@ -491,13 +510,18 @@
                 }
             });
 
-            // Auto-Close Menu on Desktop
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 768) {
                     menuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
                 }
             });
+
+            if (closeAdButton && fixedBottomAd) {
+                closeAdButton.addEventListener('click', () => {
+                    fixedBottomAd.style.display = 'none';
+                });
+            }
         });
     </script>
 </body>
