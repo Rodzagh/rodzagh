@@ -26,7 +26,7 @@
             background: var(--dark);
             color: var(--light);
             overflow-x: hidden;
-            padding-bottom: 90px;
+            padding-bottom: 90px; /* Ensures space for the fixed bottom ad */
         }
 
         .navbar {
@@ -339,8 +339,13 @@
             padding: 10px;
             min-height: 70px;
             box-sizing: border-box;
+            /* Ensure the ad content is visible and doesn't get cut off */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Adjustments for the close button on all screen sizes */
         .close-ad-btn {
             position: absolute;
             top: 5px;
@@ -349,16 +354,17 @@
             color: var(--light);
             border: none;
             border-radius: 50%;
-            width: 25px;
-            height: 25px;
+            width: 30px; /* Increased size for easier tapping */
+            height: 30px; /* Increased size for easier tapping */
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1rem;
+            font-size: 1.2rem; /* Larger 'x' for better visibility */
             cursor: pointer;
             transition: background 0.3s ease;
             line-height: 1;
             padding: 0;
+            box-sizing: border-box; /* Include padding/border in element's total width/height */
         }
 
         .close-ad-btn:hover {
@@ -407,10 +413,19 @@
             .home-info h2 { font-size: 1.3rem; height: 2.2rem; }
             .home-img { width: 250px; height: 250px; }
             body {
-                padding-bottom: 70px;
+                padding-bottom: 70px; /* Smaller padding for smaller fixed ad */
             }
             .ad-container.fixed-bottom {
-                padding: 5px;
+                padding: 5px; /* Slightly less padding on smaller screens */
+                min-height: 60px; /* Slightly smaller height on mobile */
+            }
+            /* Ensure the close button is still easily tappable on very small screens */
+            .close-ad-btn {
+                width: 35px; /* Even larger tap area for small mobile */
+                height: 35px;
+                font-size: 1.4rem;
+                top: 3px; /* Adjust position if needed */
+                right: 5px; /* Adjust position if needed */
             }
         }
 
