@@ -323,9 +323,12 @@
             z-index: 101; /* Ensure it's above the navbar */
             background-color: #2a2f38;
             padding: 10px; /* Reduced padding for mobile optimization */
-            min-height: 65px; /* Adjust height as needed for mobile */
+            min-height: 65px; /* Adjust height as needed for mobile, it can grow with content */
+            max-height: 150px; /* NEW: Set a max-height to prevent it from consuming too much screen */
+            overflow-y: auto; /* NEW: Make the content inside the banner scrollable if it exceeds max-height */
             box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3); /* Shadow to make it stand out */
-            display: flex;
+            display: flex; /* Use flexbox to center content */
+            flex-direction: column; /* Stack content vertically */
             justify-content: center;
             align-items: center;
             text-align: center;
@@ -353,10 +356,17 @@
             line-height: 1; /* Ensures 'x' is vertically centered */
             padding: 0;
             box-sizing: border-box;
+            z-index: 102; /* Ensure close button is above the ad content if ad has its own z-index */
         }
 
         .close-ad-btn:hover {
             background: rgba(255, 255, 255, 0.5); /* More prominent hover effect */
+        }
+
+        /* Ensure the ad content div fits and potentially scrolls within the container */
+        .ad-container.fixed-bottom #container-4bf3b308356c71157ea8e8f1387eedee {
+            width: 100%; /* Ensure the ad content takes full width */
+            /* No height set here, let the ad content determine it, and the parent will scroll if needed */
         }
 
         .main-content {
@@ -407,6 +417,7 @@
             .ad-container.fixed-bottom {
                 padding: 8px; /* Slightly more padding for content within the ad */
                 min-height: 70px; /* Ensure sufficient height on small screens */
+                max-height: 120px; /* NEW: Adjust max-height for very small screens */
             }
             .close-ad-btn {
                 width: 42px; /* Even larger tap area for very small mobile screens */
