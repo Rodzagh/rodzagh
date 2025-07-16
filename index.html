@@ -26,7 +26,8 @@
             background: var(--dark);
             color: var(--light);
             overflow-x: hidden;
-            padding-bottom: 90px; /* Ensures space for the fixed bottom ad */
+            /* Adjust padding-bottom to ensure content is not hidden by the fixed bottom ad */
+            padding-bottom: 90px; /* Default for larger screens */
         }
 
         .navbar {
@@ -38,7 +39,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100; /* Stays at 100 for proper layering with other content */
+            z-index: 100;
             background: rgba(31, 36, 45, 0.9);
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
@@ -313,147 +314,54 @@
             object-fit: cover;
         }
 
-        .ad-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #2a2f38;
-            padding: 15px;
-            margin: 40px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            min-height: 80px;
-            font-size: 0.9rem;
-            color: #ccc;
-            position: relative;
-        }
-
+        /* Fixed Bottom Banner Ad styles */
         .ad-container.fixed-bottom {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 101; /* Higher than navbar, now should be visible */
-            margin: 0;
-            padding: 10px;
-            min-height: 70px;
-            box-sizing: border-box;
+            z-index: 101; /* Ensure it's above the navbar */
+            background-color: #2a2f38;
+            padding: 10px; /* Reduced padding for mobile optimization */
+            min-height: 65px; /* Adjust height as needed for mobile */
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3); /* Shadow to make it stand out */
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.9rem;
+            box-sizing: border-box; /* Crucial for consistent sizing */
         }
 
         .close-ad-btn {
             position: absolute;
-            top: 5px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.2);
+            top: 5px; /* Adjust as needed */
+            right: 10px; /* Adjust as needed */
+            background: rgba(255, 255, 255, 0.3); /* Slightly more prominent background */
             color: var(--light);
             border: none;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 38px; /* Increased size for easier tapping on mobile */
+            height: 38px; /* Increased size for easier tapping on mobile */
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
+            font-size: 1.6rem; /* Larger 'x' for better visibility */
             cursor: pointer;
             transition: background 0.3s ease;
-            line-height: 1;
+            line-height: 1; /* Ensures 'x' is vertically centered */
             padding: 0;
             box-sizing: border-box;
         }
 
         .close-ad-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5); /* More prominent hover effect */
         }
 
         .main-content {
             padding: 20px 5%;
         }
-
-        /* NEW: Full-screen Ad Modal styles */
-        .full-screen-ad-modal {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 9999; /* HIGHEST Z-INDEX to ensure it's always on top */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Prevent body scroll when modal is open */
-            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            /* Initial state for animation */
-            opacity: 0;
-            pointer-events: none; /* Allows clicks through when hidden */
-            transition: opacity 0.3s ease;
-        }
-
-        .full-screen-ad-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-            display: flex; /* Display after opacity transition */
-        }
-
-        .full-screen-ad-modal .modal-content {
-            background-color: var(--dark);
-            position: relative; /* For close button positioning */
-            padding: 20px;
-            border: 1px solid var(--primary);
-            width: 90%; /* Responsive width */
-            max-width: 800px; /* Max width for larger screens */
-            max-height: 90vh; /* Limit height to viewport height */
-            overflow-y: auto; /* Allow scrolling if content is too tall */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: var(--light); /* Text color inside modal */
-            font-size: 1.1rem;
-            animation: zoomIn 0.3s ease-out;
-        }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        /* Close button for the full-screen modal */
-        .full-screen-ad-modal .close-modal-btn {
-            color: var(--light);
-            position: absolute;
-            top: 10px;
-            right: 15px; /* Adjusted slightly */
-            font-size: 40px; /* Larger for easy tap */
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            background: rgba(255, 255, 255, 0.2); /* Background for tap target */
-            border: none;
-            border-radius: 50%;
-            width: 45px; /* Larger tap area */
-            height: 45px; /* Larger tap area */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            line-height: 1;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .full-screen-ad-modal .close-modal-btn:hover,
-        .full-screen-ad-modal .close-modal-btn:focus {
-            color: var(--primary);
-            background: rgba(255, 255, 255, 0.4);
-            text-decoration: none;
-        }
-
 
         @media (max-width: 1200px) {
             .home-info h1 { font-size: 2.5rem; }
@@ -493,33 +401,19 @@
             .home-info h2 { font-size: 1.3rem; height: 2.2rem; }
             .home-img { width: 250px; height: 250px; }
             body {
-                padding-bottom: 70px;
+                /* Ensure enough padding for the fixed banner on small screens */
+                padding-bottom: 75px; /* A bit more padding to account for banner height */
             }
             .ad-container.fixed-bottom {
-                padding: 5px;
-                min-height: 60px;
+                padding: 8px; /* Slightly more padding for content within the ad */
+                min-height: 70px; /* Ensure sufficient height on small screens */
             }
             .close-ad-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 1.4rem;
-                top: 3px;
-                right: 5px;
-            }
-
-            /* Full-screen ad modal adjustments for smaller screens */
-            .full-screen-ad-modal .modal-content {
-                width: 95%; /* Wider on small screens */
-                padding: 15px; /* Slightly less padding */
-                font-size: 1rem; /* Slightly smaller text */
-            }
-
-            .full-screen-ad-modal .close-modal-btn {
-                font-size: 35px; /* Keep large size */
-                width: 40px;
-                height: 40px;
-                top: 5px; /* Adjust if needed */
-                right: 10px; /* Adjust if needed */
+                width: 42px; /* Even larger tap area for very small mobile screens */
+                height: 42px;
+                font-size: 1.8rem; /* Even larger 'x' */
+                top: 3px; /* Slightly adjust position */
+                right: 7px; /* Slightly adjust position */
             }
         }
 
@@ -589,15 +483,6 @@
         <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
     </div>
 
-    <div id="fullScreenAdModal" class="full-screen-ad-modal">
-        <div class="modal-content">
-            <button class="close-modal-btn" id="closeFullScreenAd">×</button>
-            <p>This is a full-screen ad placeholder.</p>
-            <p>You would place your ad network's **interstitial or pop-up ad code** here.</p>
-            <p>The `pl27172833.profitableratecpm.com` script you previously provided is for a popunder (new tab/window) and is **not suitable for insertion directly into this in-page modal**.</p>
-            </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const menuToggle = document.querySelector('.menu-toggle');
@@ -605,10 +490,6 @@
             const navbar = document.querySelector('.navbar');
             const fixedBottomAd = document.getElementById('fixedBottomAd');
             const closeAdButton = document.getElementById('closeAdButton');
-
-            // NEW: Full-screen ad modal elements
-            const fullScreenAdModal = document.getElementById('fullScreenAdModal');
-            const closeFullScreenAdButton = document.getElementById('closeFullScreenAd');
 
             // Toggle navigation menu on mobile
             menuToggle.addEventListener('click', () => {
@@ -647,38 +528,9 @@
             if (closeAdButton && fixedBottomAd) {
                 closeAdButton.addEventListener('click', () => {
                     fixedBottomAd.style.display = 'none';
-                });
-            }
-
-            // NEW: Logic for the full-screen ad modal
-            if (fullScreenAdModal && closeFullScreenAdButton) {
-                // Show the full-screen ad after a short delay (e.g., 3 seconds)
-                // You might want to adjust this or trigger it based on user interaction (e.g., after clicking a link)
-                setTimeout(() => {
-                    fullScreenAdModal.classList.add('active'); // Use class to trigger transitions
-                }, 3000); // 3000 milliseconds = 3 seconds
-
-                // Close the full-screen ad when the close button is clicked
-                closeFullScreenAdButton.addEventListener('click', () => {
-                    fullScreenAdModal.classList.remove('active');
-                    // Optional: remove display:flex after transition if elements are sensitive to display property
-                    setTimeout(() => {
-                        if (!fullScreenAdModal.classList.contains('active')) {
-                            fullScreenAdModal.style.display = 'none';
-                        }
-                    }, 300); // Match CSS transition time
-                });
-
-                // Optional: Close the modal if the user clicks outside the content
-                fullScreenAdModal.addEventListener('click', (event) => {
-                    if (event.target === fullScreenAdModal) { // Only close if clicking the background, not the content
-                        fullScreenAdModal.classList.remove('active');
-                        setTimeout(() => {
-                            if (!fullScreenAdModal.classList.contains('active')) {
-                                fullScreenAdModal.style.display = 'none';
-                            }
-                        }, 300);
-                    }
+                    // Optional: adjust padding-bottom of body if the ad is closed
+                    // This prevents a sudden jump in layout.
+                    document.body.style.paddingBottom = '0';
                 });
             }
         });
