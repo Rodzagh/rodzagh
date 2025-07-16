@@ -27,7 +27,7 @@
             color: var(--light);
             overflow-x: hidden;
             /* Adjust padding-bottom to ensure content is not hidden by the fixed bottom ad */
-            padding-bottom: 90px; /* Default for larger screens */
+            padding-bottom: 180px; /* Adjusted for potentially taller banner on larger screens */
         }
 
         .navbar {
@@ -323,14 +323,14 @@
             z-index: 101; /* Ensure it's above the navbar */
             background-color: #2a2f38;
             padding: 10px; /* Reduced padding for mobile optimization */
-            min-height: 65px; /* Adjust height as needed for mobile, it can grow with content */
-            max-height: 150px; /* NEW: Set a max-height to prevent it from consuming too much screen */
-            overflow-y: auto; /* NEW: Make the content inside the banner scrollable if it exceeds max-height */
+            /* min-height: 65px; -- REMOVED: Let max-height and content determine height */
+            max-height: 180px; /* NEW: Increased max-height for more content visibility */
+            overflow-y: auto; /* Make the content inside the banner scrollable if it exceeds max-height */
             box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3); /* Shadow to make it stand out */
-            display: flex; /* Use flexbox to center content */
+            display: flex;
             flex-direction: column; /* Stack content vertically */
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start; /* NEW: Align content to the top for better scrolling */
+            align-items: center; /* Center horizontally */
             text-align: center;
             color: #ccc;
             font-size: 0.9rem;
@@ -366,7 +366,8 @@
         /* Ensure the ad content div fits and potentially scrolls within the container */
         .ad-container.fixed-bottom #container-4bf3b308356c71157ea8e8f1387eedee {
             width: 100%; /* Ensure the ad content takes full width */
-            /* No height set here, let the ad content determine it, and the parent will scroll if needed */
+            /* Let the ad content determine its own height */
+            flex-shrink: 0; /* Prevents shrinking if content wants to be taller */
         }
 
         .main-content {
@@ -412,12 +413,12 @@
             .home-img { width: 250px; height: 250px; }
             body {
                 /* Ensure enough padding for the fixed banner on small screens */
-                padding-bottom: 75px; /* A bit more padding to account for banner height */
+                padding-bottom: 150px; /* Adjusted for potentially taller banner on small screens */
             }
             .ad-container.fixed-bottom {
                 padding: 8px; /* Slightly more padding for content within the ad */
-                min-height: 70px; /* Ensure sufficient height on small screens */
-                max-height: 120px; /* NEW: Adjust max-height for very small screens */
+                /* min-height: 70px; -- REMOVED */
+                max-height: 140px; /* NEW: Adjusted max-height for very small screens */
             }
             .close-ad-btn {
                 width: 42px; /* Even larger tap area for very small mobile screens */
