@@ -195,13 +195,13 @@
             margin-bottom: 1rem;
             height: 2.2rem;
             overflow: hidden;
-            display: flex; /* Use Flexbox for better alignment */
+            display: flex;
             align-items: center;
         }
 
         .home-info h2 .static-text {
             white-space: nowrap;
-            margin-right: 0.5rem; /* Add some space after "I am" */
+            margin-right: 0.5rem;
         }
 
         .home-info h2 .animated-text {
@@ -414,7 +414,7 @@
         }
         
         .ad-container.collapsed {
-            height: 50px; /* Collapsed height */
+            height: 50px;
             min-height: 50px;
             padding: 0;
         }
@@ -425,7 +425,7 @@
             align-items: center;
             width: 100%;
             flex-grow: 1;
-            overflow: hidden;
+            overflow-y: auto; /* Make the ad content scrollable */
             transition: all 0.5s ease;
         }
         
@@ -452,6 +452,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             line-height: 1;
+            z-index: 102; /* Ensure the button is always on top */
         }
 
         .close-ad-btn:hover {
@@ -516,15 +517,15 @@
             .home-info h1 { font-size: 2rem; }
             .home-info h2 { 
                 font-size: 1.2rem; 
-                height: auto; /* Allow height to adjust */
-                flex-direction: column; /* Stack on small screens */
-                align-items: flex-start; /* Align text to the left */
+                height: auto;
+                flex-direction: column;
+                align-items: flex-start;
             }
             .home-info h2 .static-text {
                 margin-right: 0;
             }
             .home-info h2 .animated-text {
-                height: 1.5rem; /* Give the animation some space */
+                height: 1.5rem;
             }
             .btn-sci { flex-direction: column; gap: 1.5rem; }
             .sci { justify-content: center; }
