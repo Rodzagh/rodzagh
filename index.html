@@ -40,6 +40,7 @@
             overflow-x: hidden;
             line-height: 1.6;
             background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>');
+            transition: padding-bottom 0.5s ease;
         }
         
         /* Utility classes */
@@ -114,14 +115,10 @@
             transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .nav-links a:hover::after {
+        .nav-links a:hover::after, .nav-links a.active::after {
             width: 100%;
         }
         
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -321,29 +318,24 @@
             align-items: center;
         }
 
-        .img-box::before {
+        .img-box::before, .img-box::after {
             content: '';
             position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: conic-gradient(transparent, transparent, transparent, var(--primary-color));
             padding: 1px;
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask-composite: exclude;
+        }
+        
+        .img-box::before {
+            background: conic-gradient(transparent, transparent, transparent, var(--primary-color));
             animation: rotate 6s linear infinite;
         }
 
         .img-box::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
             background: conic-gradient(transparent, transparent, transparent, var(--accent-color));
-            padding: 1px;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
             animation: rotate-reverse 6s linear infinite;
         }
         
@@ -381,7 +373,7 @@
 
         /*
          * =============================================
-         * Ad Container (Revised)
+         * Ad Container (Final)
          * =============================================
          */
         .ad-container.fixed-bottom {
@@ -405,11 +397,34 @@
             min-height: 50px;
             max-height: 250px;
             overflow: hidden;
-            transition: transform 0.5s ease;
+            transition: all 0.5s ease;
         }
         
+        .ad-container.collapsed {
+            height: 50px; /* Collapsed height */
+            min-height: 50px;
+            padding: 0;
+        }
+
         .ad-container.hidden {
             transform: translateY(100%);
+            visibility: hidden;
+        }
+
+        .ad-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .ad-container.collapsed .ad-content {
+            height: 0;
+            padding: 0;
+            opacity: 0;
         }
 
         .close-ad-btn {
@@ -435,17 +450,16 @@
             background: rgba(255, 255, 255, 0.3);
             transform: rotate(90deg);
         }
-
-        /* Ensure the ad content div fits and adapts within the container */
-        .ad-container.fixed-bottom #container-4bf3b308356c71157ea8e8f1387eedee {
-            width: 100%;
-            height: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 1;
-        }
         
+        .ad-container.collapsed .close-ad-btn {
+            top: 10px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+        }
+
         /*
          * =============================================
          * Media Queries for Responsiveness
@@ -482,9 +496,7 @@
                 gap: 2.5rem;
                 transition: left 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             }
-            .nav-links.active {
-                left: 0;
-            }
+            .nav-links.active { left: 0; }
             .nav-links a { font-size: 1.5rem; }
             .home-info h1 { font-size: 2.5rem; }
             .home-info h2 { font-size: 1.4rem; height: 2.5rem; }
@@ -563,7 +575,9 @@
         <button class="close-ad-btn" id="closeAdButton">
             <i class="fa-solid fa-xmark"></i>
         </button>
-        <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
+        <div class="ad-content" id="adContent">
+            <div id="container-4bf3b308356c71157ea8e8f1387eedee"></div>
+        </div>
         <script async="async" data-cfasync="false" src="//pl27172851.profitableratecpm.com/4bf3b308356c71157ea8e8f1387eedee/invoke.js"></script>
     </div>
 
@@ -574,14 +588,38 @@
             const navbar = document.querySelector('.navbar');
             const fixedBottomAd = document.getElementById('fixedBottomAd');
             const closeAdButton = document.getElementById('closeAdButton');
+            const adContent = document.getElementById('adContent');
+            const closeIcon = closeAdButton.querySelector('i');
             const body = document.body;
+            let adState = 'visible'; // States: 'visible', 'collapsed', 'hidden'
+
+            function updateAdState(newState) {
+                adState = newState;
+                if (adState === 'visible') {
+                    fixedBottomAd.classList.remove('collapsed', 'hidden');
+                    closeIcon.classList.remove('fa-angle-up');
+                    closeIcon.classList.add('fa-xmark');
+                    adjustBodyPadding();
+                } else if (adState === 'collapsed') {
+                    fixedBottomAd.classList.add('collapsed');
+                    fixedBottomAd.classList.remove('hidden');
+                    closeIcon.classList.remove('fa-xmark');
+                    closeIcon.classList.add('fa-angle-up');
+                    adjustBodyPadding();
+                } else if (adState === 'hidden') {
+                    fixedBottomAd.classList.add('hidden');
+                    adjustBodyPadding();
+                }
+            }
 
             // Function to adjust body padding based on ad visibility and height
             function adjustBodyPadding() {
-                if (fixedBottomAd && !fixedBottomAd.classList.contains('hidden')) {
+                if (fixedBottomAd && adState !== 'hidden') {
                     setTimeout(() => {
-                        const adHeight = fixedBottomAd.offsetHeight;
-                        body.style.paddingBottom = `${adHeight + 20}px`; // Add a little extra space
+                        const adHeight = adState === 'collapsed' ? fixedBottomAd.offsetHeight : fixedBottomAd.offsetHeight;
+                        // Add a little extra space. Use the collapsed height if applicable.
+                        const padding = adState === 'collapsed' ? 50 : adHeight + 20;
+                        body.style.paddingBottom = `${padding}px`;
                     }, 100);
                 } else {
                     body.style.paddingBottom = '0';
@@ -625,13 +663,28 @@
                 }
             });
 
-            // Fixed Bottom Ad close logic
-            if (closeAdButton && fixedBottomAd) {
+            // Ad banner interaction logic
+            if (closeAdButton) {
                 closeAdButton.addEventListener('click', () => {
-                    fixedBottomAd.classList.add('hidden');
-                    adjustBodyPadding();
+                    if (adState === 'visible') {
+                        updateAdState('collapsed');
+                    } else if (adState === 'collapsed') {
+                        updateAdState('hidden');
+                    }
                 });
             }
+            
+            // Re-show ad when user scrolls to bottom
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && adState === 'hidden') {
+                    if (scrollTimeout) clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                         updateAdState('collapsed');
+                    }, 500); // Give a brief delay to prevent accidental activation
+                }
+            });
+
         });
     </script>
 </body>
