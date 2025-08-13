@@ -198,9 +198,10 @@
             position: relative;
         }
 
-        .home-info h2 span {
+        /* This is the key change for the animation flow */
+        .home-info h2 .typing-text {
             position: absolute;
-            left: 0;
+            left: 5.5rem; /* Adjust this value to position the text correctly after "I am" */
             opacity: 0;
             color: var(--primary-color);
             animation: textSlide 12s infinite;
@@ -212,12 +213,12 @@
             25%, 100% { opacity: 0; transform: translateY(-20px); }
         }
 
-        .home-info h2 span:nth-child(1) { animation-delay: 0s; }
-        .home-info h2 span:nth-child(2) { animation-delay: 2s; }
-        .home-info h2 span:nth-child(3) { animation-delay: 4s; }
-        .home-info h2 span:nth-child(4) { animation-delay: 6s; }
-        .home-info h2 span:nth-child(5) { animation-delay: 8s; }
-        .home-info h2 span:nth-child(6) { animation-delay: 10s; }
+        .home-info h2 .typing-text:nth-child(1) { animation-delay: 1s; }
+        .home-info h2 .typing-text:nth-child(2) { animation-delay: 3s; }
+        .home-info h2 .typing-text:nth-child(3) { animation-delay: 5s; }
+        .home-info h2 .typing-text:nth-child(4) { animation-delay: 7s; }
+        .home-info h2 .typing-text:nth-child(5) { animation-delay: 9s; }
+        .home-info h2 .typing-text:nth-child(6) { animation-delay: 11s; }
 
         .home-info p {
             font-size: 1rem;
@@ -406,11 +407,6 @@
             padding: 0;
         }
 
-        .ad-container.hidden {
-            transform: translateY(100%);
-            visibility: hidden;
-        }
-
         .ad-content {
             display: flex;
             justify-content: center;
@@ -536,13 +532,13 @@
                 <div class="home-info">
                     <h1>Hi, I'm <span>Ronald Chitsatso</span>.</h1>
                     <h2>
-                        I'm a
-                        <span style="--i:6;" data-text="Chess Player.">Chess Player.</span>
-                        <span style="--i:5;" data-text="Financial Engineer.">Financial Engineer.</span>
-                        <span style="--i:4;" data-text="Data Analyst.">Data Analyst.</span>
-                        <span style="--i:3;" data-text="Python Expert.">Python Expert.</span>
-                        <span style="--i:2;" data-text="Youtuber.">Youtuber.</span>
-                        <span style="--i:1;" data-text="Financial Analyst.">Financial Analyst.</span>
+                        I am 
+                        <span class="typing-text">Chess Player.</span>
+                        <span class="typing-text">Financial Engineer.</span>
+                        <span class="typing-text">Data Analyst.</span>
+                        <span class="typing-text">Python Expert.</span>
+                        <span class="typing-text">Youtuber.</span>
+                        <span class="typing-text">Financial Analyst.</span>
                     </h2>
                     <p>
                         Welcome! I'm a data-driven professional with a background in Financial Engineering.
@@ -588,47 +584,22 @@
             const navbar = document.querySelector('.navbar');
             const fixedBottomAd = document.getElementById('fixedBottomAd');
             const closeAdButton = document.getElementById('closeAdButton');
-            const adContent = document.getElementById('adContent');
             const closeIcon = closeAdButton.querySelector('i');
             const body = document.body;
-            let adState = 'visible'; // States: 'visible', 'collapsed', 'hidden'
-
-            function updateAdState(newState) {
-                adState = newState;
-                if (adState === 'visible') {
-                    fixedBottomAd.classList.remove('collapsed', 'hidden');
-                    closeIcon.classList.remove('fa-angle-up');
-                    closeIcon.classList.add('fa-xmark');
-                    adjustBodyPadding();
-                } else if (adState === 'collapsed') {
-                    fixedBottomAd.classList.add('collapsed');
-                    fixedBottomAd.classList.remove('hidden');
-                    closeIcon.classList.remove('fa-xmark');
-                    closeIcon.classList.add('fa-angle-up');
-                    adjustBodyPadding();
-                } else if (adState === 'hidden') {
-                    fixedBottomAd.classList.add('hidden');
-                    adjustBodyPadding();
-                }
-            }
 
             // Function to adjust body padding based on ad visibility and height
             function adjustBodyPadding() {
-                if (fixedBottomAd && adState !== 'hidden') {
-                    setTimeout(() => {
-                        const adHeight = adState === 'collapsed' ? fixedBottomAd.offsetHeight : fixedBottomAd.offsetHeight;
-                        // Add a little extra space. Use the collapsed height if applicable.
-                        const padding = adState === 'collapsed' ? 50 : adHeight + 20;
-                        body.style.paddingBottom = `${padding}px`;
-                    }, 100);
-                } else {
-                    body.style.paddingBottom = '0';
-                }
+                // Wait for the ad to render
+                setTimeout(() => {
+                    const adHeight = fixedBottomAd.offsetHeight;
+                    const isCollapsed = fixedBottomAd.classList.contains('collapsed');
+                    body.style.paddingBottom = isCollapsed ? '50px' : `${adHeight + 20}px`;
+                }, 100);
             }
 
             // Initial adjustment
             adjustBodyPadding();
-
+            
             // Handle window resize
             window.addEventListener('resize', () => {
                 adjustBodyPadding();
@@ -664,27 +635,20 @@
             });
 
             // Ad banner interaction logic
-            if (closeAdButton) {
+            if (closeAdButton && fixedBottomAd) {
                 closeAdButton.addEventListener('click', () => {
-                    if (adState === 'visible') {
-                        updateAdState('collapsed');
-                    } else if (adState === 'collapsed') {
-                        updateAdState('hidden');
+                    const isCollapsed = fixedBottomAd.classList.toggle('collapsed');
+                    
+                    if (isCollapsed) {
+                        closeIcon.classList.remove('fa-xmark');
+                        closeIcon.classList.add('fa-angle-up');
+                    } else {
+                        closeIcon.classList.remove('fa-angle-up');
+                        closeIcon.classList.add('fa-xmark');
                     }
+                    adjustBodyPadding();
                 });
             }
-            
-            // Re-show ad when user scrolls to bottom
-            let scrollTimeout;
-            window.addEventListener('scroll', () => {
-                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && adState === 'hidden') {
-                    if (scrollTimeout) clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                         updateAdState('collapsed');
-                    }, 500); // Give a brief delay to prevent accidental activation
-                }
-            });
-
         });
     </script>
 </body>
