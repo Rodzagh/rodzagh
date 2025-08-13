@@ -195,14 +195,27 @@
             margin-bottom: 1rem;
             height: 2.2rem;
             overflow: hidden;
-            position: relative;
+            display: flex; /* Use Flexbox for better alignment */
+            align-items: center;
         }
 
-        .home-info h2 .typing-text {
-            position: absolute;
-            left: 5.5rem; /* Adjust this value to position the text correctly after "I am" */
-            opacity: 0;
+        .home-info h2 .static-text {
+            white-space: nowrap;
+            margin-right: 0.5rem; /* Add some space after "I am" */
+        }
+
+        .home-info h2 .animated-text {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
             color: var(--primary-color);
+            flex-grow: 1;
+        }
+
+        .home-info h2 .animated-text span {
+            position: absolute;
+            left: 0;
+            opacity: 0;
             animation: textSlide 12s infinite;
         }
 
@@ -212,12 +225,12 @@
             25%, 100% { opacity: 0; transform: translateY(-20px); }
         }
 
-        .home-info h2 .typing-text:nth-child(1) { animation-delay: 1s; }
-        .home-info h2 .typing-text:nth-child(2) { animation-delay: 3s; }
-        .home-info h2 .typing-text:nth-child(3) { animation-delay: 5s; }
-        .home-info h2 .typing-text:nth-child(4) { animation-delay: 7s; }
-        .home-info h2 .typing-text:nth-child(5) { animation-delay: 9s; }
-        .home-info h2 .typing-text:nth-child(6) { animation-delay: 11s; }
+        .home-info h2 .animated-text span:nth-child(1) { animation-delay: 1s; }
+        .home-info h2 .animated-text span:nth-child(2) { animation-delay: 3s; }
+        .home-info h2 .animated-text span:nth-child(3) { animation-delay: 5s; }
+        .home-info h2 .animated-text span:nth-child(4) { animation-delay: 7s; }
+        .home-info h2 .animated-text span:nth-child(5) { animation-delay: 9s; }
+        .home-info h2 .animated-text span:nth-child(6) { animation-delay: 11s; }
 
         .home-info p {
             font-size: 1rem;
@@ -501,7 +514,18 @@
         
         @media (max-width: 576px) {
             .home-info h1 { font-size: 2rem; }
-            .home-info h2 { font-size: 1.2rem; }
+            .home-info h2 { 
+                font-size: 1.2rem; 
+                height: auto; /* Allow height to adjust */
+                flex-direction: column; /* Stack on small screens */
+                align-items: flex-start; /* Align text to the left */
+            }
+            .home-info h2 .static-text {
+                margin-right: 0;
+            }
+            .home-info h2 .animated-text {
+                height: 1.5rem; /* Give the animation some space */
+            }
             .btn-sci { flex-direction: column; gap: 1.5rem; }
             .sci { justify-content: center; }
             .home-img { width: 250px; height: 250px; }
@@ -531,13 +555,15 @@
                 <div class="home-info">
                     <h1>Hi, I'm <span>Ronald Chitsatso</span>.</h1>
                     <h2>
-                        I am 
-                        <span class="typing-text">Chess Player.</span>
-                        <span class="typing-text">Financial Engineer.</span>
-                        <span class="typing-text">Data Analyst.</span>
-                        <span class="typing-text">Python Expert.</span>
-                        <span class="typing-text">Youtuber.</span>
-                        <span class="typing-text">Financial Analyst.</span>
+                        <span class="static-text">I am</span>
+                        <div class="animated-text">
+                            <span>Chess Player.</span>
+                            <span>Financial Engineer.</span>
+                            <span>Data Analyst.</span>
+                            <span>Python Expert.</span>
+                            <span>Youtuber.</span>
+                            <span>Financial Analyst.</span>
+                        </div>
                     </h2>
                     <p>
                         Welcome! I'm a data-driven professional with a background in Financial Engineering.
