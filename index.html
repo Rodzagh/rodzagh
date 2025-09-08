@@ -14,7 +14,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-289DFE2Z32');
     </script>
     <!-- Google Tag Manager -->
@@ -24,7 +23,6 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PWK6H4JM');</script>
     <!-- End Google Tag Manager -->
-    
     
     <style>
         /*
@@ -529,8 +527,10 @@
             .home-info h2 { 
                 font-size: 1.4rem; 
                 height: 2.5rem; 
-                flex-direction: row; /* Keep it as row on mobile */
-                justify-content: center; /* Center the content */
+                /* FIX: Ensure proper display for animation */
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .home-info p { font-size: 0.9rem; }
             .home-img { width: 300px; height: 300px; }
@@ -540,23 +540,24 @@
             .home-info h1 { font-size: 2rem; }
             .home-info h2 { 
                 font-size: 1.2rem; 
+                /* FIX: Changed from flex-direction: column to keep animation working */
+                flex-direction: row;
                 height: 2.5rem;
-                flex-direction: row; /* Keep it as row on mobile */
-                justify-content: center; /* Center the content */
+                justify-content: center;
             }
             .home-info h2 .static-text {
-                margin-right: 0.5rem; /* Keep margin on mobile */
+                margin-right: 0.5rem; /* Keep margin for proper spacing */
             }
             .home-info h2 .animated-text {
-                height: 100%; /* Full height */
-                width: auto; /* Auto width */
+                height: 100%; /* Ensure full height */
+                width: auto; /* Let it size naturally */
             }
             .btn-sci { flex-direction: column; gap: 1.5rem; }
             .sci { justify-content: center; }
             .home-img { width: 250px; height: 250px; }
         }
 
-        /* Fix for very small screens */
+        /* NEW: Additional fix for very small screens */
         @media (max-width: 400px) {
             .home-info h2 {
                 font-size: 1.1rem;
