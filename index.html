@@ -531,6 +531,14 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                flex-wrap: wrap;
+            }
+            .home-info h2 .static-text {
+                margin-right: 0.5rem;
+            }
+            .home-info h2 .animated-text {
+                min-width: 180px; /* Ensure enough space for the longest word */
+                text-align: left;
             }
             .home-info p { font-size: 0.9rem; }
             .home-img { width: 300px; height: 300px; }
@@ -544,6 +552,7 @@
                 flex-direction: row;
                 height: 2.5rem;
                 justify-content: center;
+                flex-wrap: wrap;
             }
             .home-info h2 .static-text {
                 margin-right: 0.5rem; /* Keep margin for proper spacing */
@@ -551,6 +560,7 @@
             .home-info h2 .animated-text {
                 height: 100%; /* Ensure full height */
                 width: auto; /* Let it size naturally */
+                min-width: 150px; /* Ensure minimum width for animation */
             }
             .btn-sci { flex-direction: column; gap: 1.5rem; }
             .sci { justify-content: center; }
@@ -574,7 +584,34 @@
             .home-info h2 .animated-text {
                 width: 100%;
                 text-align: center;
+                min-width: unset;
             }
+            /* Adjust animation for very small screens */
+            .home-info h2 .animated-text span {
+                width: 100%;
+                text-align: center;
+                left: 0;
+            }
+        }
+
+        /* NEW: Fix for animation timing on small devices */
+        @media (max-width: 576px) {
+            .home-info h2 .animated-text span {
+                animation: textSlideMobile 12s infinite;
+            }
+            
+            @keyframes textSlideMobile {
+                0%, 8% { opacity: 0; transform: translateY(20px); }
+                12%, 22% { opacity: 1; transform: translateY(0); }
+                26%, 100% { opacity: 0; transform: translateY(-20px); }
+            }
+            
+            .home-info h2 .animated-text span:nth-child(1) { animation-delay: 1s; }
+            .home-info h2 .animated-text span:nth-child(2) { animation-delay: 3s; }
+            .home-info h2 .animated-text span:nth-child(3) { animation-delay: 5s; }
+            .home-info h2 .animated-text span:nth-child(4) { animation-delay: 7s; }
+            .home-info h2 .animated-text span:nth-child(5) { animation-delay: 9s; }
+            .home-info h2 .animated-text span:nth-child(6) { animation-delay: 11s; }
         }
     </style>
 </head>
